@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Repository {
+  id           Int           @id
+  name         String
+  pullRequests PullRequest[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PullRequest {
+  id        Int      @id @default(autoincrement())
+  repoId    Int
+  prNumber  Int
+  title     String
+  status    PRStatus
+
+  openedAt  DateTime
+  closedAt  DateTime?
+
+  alertedAt DateTime?
+
+  repository Repository @relation(fields: [repoId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([repoId, prNumber])
+}
+
+enum PRStatus {
+  OPEN
+  CLOSED
+}
