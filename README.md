@@ -1,10 +1,8 @@
 ## OpsCopilot
 
-**OpsCopilot is a lightweight operational intelligence tool that helps small engineering teams detect workflow issues early through rule-based alerts — without notification spam.**
+**OpsCopilot is a lightweight tool that helps small engineering teams surface workflow issues earlier using rule-based Slack alerts — without notification spam.**
 
-Instead of flooding Slack with events, OpsCopilot encodes workflow standards (e.g. “PRs shouldn’t stay open too long”) and only alerts when those standards are violated.
-
----
+## Instead of flooding Slack with GitHub events, OpsCopilot encodes workflow standards (e.g. “PRs shouldn’t stay open too long”) and only alerts when those standards are violated.
 
 ## Why I Built This
 

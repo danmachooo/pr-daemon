@@ -7,8 +7,8 @@
     "dev:worker": "tsx watch src/worker.ts",
     "dev": "concurrently \"npm run dev:api\" \"npm run dev:worker\"",
     "build": "tsc",
-    "start": "node dist/server.js",
-    "start:worker": "node dist/worker.js"
+    "start": "tsx src/server.ts",
+    "start:worker": "tsx src/worker.ts"
   },
   "keywords": [],
   "author": "",
