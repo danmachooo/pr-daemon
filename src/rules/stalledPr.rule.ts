@@ -10,16 +10,24 @@ export async function findStalledPrs() {
   return await prisma.pullRequest.findMany({
     where: {
       status: PRStatus.OPEN,
-      reviewCount: { gt: 0 },
-      stalledAlertAt: null,
-      // Logic: The author hasn't pushed code AND
-      // the reviewer hasn't updated their review recently.
-      AND: [
+      stalledAlertAt: null, // Don't alert if we already did
+
+      // A PR is stalled if it has been "touched" but no progress made recently
+      OR: [
         {
-          lastCommitAt: { lte: thresholdDate },
+          // Case 1: It has reviews, but activity stopped
+          reviewCount: { gt: 0 },
+          AND: [
+            { lastCommitAt: { lte: thresholdDate } },
+            { lastReviewAt: { lte: thresholdDate } },
+          ],
         },
         {
-          lastReviewAt: { lte: thresholdDate },
+          // Case 2: No reviews at all, and the author hasn't pushed
+          // (This captures PRs that were opened and forgotten)
+          reviewCount: 0,
+          openedAt: { lte: thresholdDate },
+          lastCommitAt: { lte: thresholdDate },
         },
       ],
     },

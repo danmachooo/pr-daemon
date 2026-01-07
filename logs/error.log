@@ -1,0 +1,312 @@
+2026-01-07 21:18:55:1855 [31merror[39m: [31mFailed to handle PR event review_requested for #42 [39m
+[31mInvalid `prisma.pullRequest.upsert()` invocation in[39m
+[31mC:\Users\PC\opscopilot\src\services\pullRequest.service.ts:55:35[39m
+
+[31m  52 [39m
+[31m  53 export async function upsertPullRequest(data: UpsertPullRequest) {[39m
+[31m  54   const { repoId, repoName, prNumber, ...updateFields } = data;[39m
+[31m→ 55   return await prisma.pullRequest.upsert({[39m
+[31m         where: {[39m
+[31m           repoId_prNumber: {[39m
+[31m             repoId: 101,[39m
+[31m             prNumber: 42[39m
+[31m           }[39m
+[31m         },[39m
+[31m         update: {[39m
+[31m           title: undefined,[39m
+[31m           status: "OPEN",[39m
+[31m           openedAt: new Date("Invalid Date"),[39m
+[31m                     ~~~~~~~~~~~~~~~~~~~~~~~~[39m
+[31m           closedAt: null,[39m
+[31m           lastCommitAt: new Date("Invalid Date"),[39m
+[31m           reviewers: [[39m
+[31m             {[39m
+[31m               id: 888,[39m
+[31m               login: "reviewer_bob",[39m
+[31m               type: "User"[39m
+[31m             },[39m
+[31m             {[39m
+[31m               id: 999,[39m
+[31m               login: "reviewer_sarah",[39m
+[31m               type: "User"[39m
+[31m             }[39m
+[31m           ],[39m
+[31m           repository: {[39m
+[31m             connectOrCreate: {[39m
+[31m               where: {[39m
+[31m                 id: 101[39m
+[31m               },[39m
+[31m               create: {[39m
+[31m                 id: 101,[39m
+[31m                 name: "backend-api"[39m
+[31m               }[39m
+[31m             }[39m
+[31m           }[39m
+[31m         },[39m
+[31m         create: {[39m
+[31m           prNumber: 42,[39m
+[31m           title: undefined,[39m
+[31m           status: "OPEN",[39m
+[31m           openedAt: new Date("Invalid Date"),[39m
+[31m           closedAt: null,[39m
+[31m           lastCommitAt: new Date("Invalid Date"),[39m
+[31m           reviewers: [[39m
+[31m             {[39m
+[31m               id: 888,[39m
+[31m               login: "reviewer_bob",[39m
+[31m               type: "User"[39m
+[31m             },[39m
+[31m             {[39m
+[31m               id: 999,[39m
+[31m               login: "reviewer_sarah",[39m
+[31m               type: "User"[39m
+[31m             }[39m
+[31m           ],[39m
+[31m           repository: {[39m
+[31m             connectOrCreate: {[39m
+[31m               where: {[39m
+[31m                 id: 101[39m
+[31m               },[39m
+[31m               create: {[39m
+[31m                 id: 101,[39m
+[31m                 name: "backend-api"[39m
+[31m               }[39m
+[31m             }[39m
+[31m           }[39m
+[31m         }[39m
+[31m       })[39m
+
+[31mInvalid value for argument `openedAt`: Provided Date object is invalid. Expected Date.[39m
+2026-01-07 21:33:16:3316 [31merror[39m: [31mFailed to handle PR event synchronize for #42 [39m
+[31mInvalid `prisma.pullRequest.upsert()` invocation in[39m
+[31mC:\Users\PC\opscopilot\src\services\pullRequest.service.ts:55:35[39m
+
+[31m  52 [39m
+[31m  53 export async function upsertPullRequest(data: UpsertPullRequest) {[39m
+[31m  54   const { repoId, repoName, prNumber, ...updateFields } = data;[39m
+[31m→ 55   return await prisma.pullRequest.upsert({[39m
+[31m         where: {[39m
+[31m           repoId_prNumber: {[39m
+[31m             repoId: 123456,[39m
+[31m             prNumber: 42[39m
+[31m           }[39m
+[31m         },[39m
+[31m         update: {[39m
+[31m           title: "Add stale PR detection (updated)",[39m
+[31m           status: "OPEN",[39m
+[31m           openedAt: new Date("Invalid Date"),[39m
+[31m                     ~~~~~~~~~~~~~~~~~~~~~~~~[39m
+[31m           closedAt: null,[39m
+[31m           lastCommitAt: new Date("2026-01-07T12:00:00.000Z"),[39m
+[31m           reviewers: [],[39m
+[31m           repository: {[39m
+[31m             connectOrCreate: {[39m
+[31m               where: {[39m
+[31m                 id: 123456[39m
+[31m               },[39m
+[31m               create: {[39m
+[31m                 id: 123456,[39m
+[31m                 name: "opscopilot"[39m
+[31m               }[39m
+[31m             }[39m
+[31m           }[39m
+[31m         },[39m
+[31m         create: {[39m
+[31m           prNumber: 42,[39m
+[31m           title: "Add stale PR detection (updated)",[39m
+[31m           status: "OPEN",[39m
+[31m           openedAt: new Date("Invalid Date"),[39m
+[31m           closedAt: null,[39m
+[31m           lastCommitAt: new Date("2026-01-07T12:00:00.000Z"),[39m
+[31m           reviewers: [],[39m
+[31m           repository: {[39m
+[31m             connectOrCreate: {[39m
+[31m               where: {[39m
+[31m                 id: 123456[39m
+[31m               },[39m
+[31m               create: {[39m
+[31m                 id: 123456,[39m
+[31m                 name: "opscopilot"[39m
+[31m               }[39m
+[31m             }[39m
+[31m           }[39m
+[31m         }[39m
+[31m       })[39m
+
+[31mInvalid value for argument `openedAt`: Provided Date object is invalid. Expected Date.[39m
+2026-01-07 21:42:42:4242 [31merror[39m: [31mFailed to handle PR event synchronize for #42 [39m
+[31mInvalid `prisma.pullRequest.upsert()` invocation in[39m
+[31mC:\Users\PC\opscopilot\src\services\pullRequest.service.ts:55:35[39m
+
+[31m  52 [39m
+[31m  53 export async function upsertPullRequest(data: UpsertPullRequest) {[39m
+[31m  54   const { repoId, repoName, prNumber, ...updateFields } = data;[39m
+[31m→ 55   return await prisma.pullRequest.upsert({[39m
+[31m         where: {[39m
+[31m           repoId_prNumber: {[39m
+[31m             repoId: 123456,[39m
+[31m             prNumber: 42[39m
+[31m           }[39m
+[31m         },[39m
+[31m         update: {[39m
+[31m           title: "Add stale PR detection (updated)",[39m
+[31m           status: "OPEN",[39m
+[31m           updatedAt: new Date("2026-01-07T12:00:00.000Z"),[39m
+[31m           openedAt: new Date("Invalid Date"),[39m
+[31m                     ~~~~~~~~~~~~~~~~~~~~~~~~[39m
+[31m           closedAt: null,[39m
+[31m           lastCommitAt: new Date("2026-01-07T12:00:00.000Z"),[39m
+[31m           reviewers: [],[39m
+[31m           repository: {[39m
+[31m             connectOrCreate: {[39m
+[31m               where: {[39m
+[31m                 id: 123456[39m
+[31m               },[39m
+[31m               create: {[39m
+[31m                 id: 123456,[39m
+[31m                 name: "opscopilot"[39m
+[31m               }[39m
+[31m             }[39m
+[31m           }[39m
+[31m         },[39m
+[31m         create: {[39m
+[31m           prNumber: 42,[39m
+[31m           title: "Add stale PR detection (updated)",[39m
+[31m           status: "OPEN",[39m
+[31m           updatedAt: new Date("2026-01-07T12:00:00.000Z"),[39m
+[31m           openedAt: new Date("Invalid Date"),[39m
+[31m           closedAt: null,[39m
+[31m           lastCommitAt: new Date("2026-01-07T12:00:00.000Z"),[39m
+[31m           reviewers: [],[39m
+[31m           repository: {[39m
+[31m             connectOrCreate: {[39m
+[31m               where: {[39m
+[31m                 id: 123456[39m
+[31m               },[39m
+[31m               create: {[39m
+[31m                 id: 123456,[39m
+[31m                 name: "opscopilot"[39m
+[31m               }[39m
+[31m             }[39m
+[31m           }[39m
+[31m         }[39m
+[31m       })[39m
+
+[31mInvalid value for argument `openedAt`: Provided Date object is invalid. Expected Date.[39m
+2026-01-07 21:51:33:5133 [31merror[39m: [31mFailed to handle PR event synchronize for #42 [39m
+[31mInvalid `prisma.pullRequest.upsert()` invocation in[39m
+[31mC:\Users\PC\opscopilot\src\services\pullRequest.service.ts:55:35[39m
+
+[31m  52 [39m
+[31m  53 export async function upsertPullRequest(data: UpsertPullRequest) {[39m
+[31m  54   const { repoId, repoName, prNumber, ...updateFields } = data;[39m
+[31m→ 55   return await prisma.pullRequest.upsert({[39m
+[31m         where: {[39m
+[31m           repoId_prNumber: {[39m
+[31m             repoId: 123456,[39m
+[31m             prNumber: 42[39m
+[31m           }[39m
+[31m         },[39m
+[31m         update: {[39m
+[31m           title: "Add stale PR detection (updated)",[39m
+[31m           status: "OPEN",[39m
+[31m           updatedAt: new Date("2026-01-07T12:00:00.000Z"),[39m
+[31m           openedAt: new Date("Invalid Date"),[39m
+[31m                     ~~~~~~~~~~~~~~~~~~~~~~~~[39m
+[31m           closedAt: null,[39m
+[31m           lastCommitAt: new Date("2026-01-07T12:00:00.000Z"),[39m
+[31m           reviewers: [],[39m
+[31m           repository: {[39m
+[31m             connectOrCreate: {[39m
+[31m               where: {[39m
+[31m                 id: 123456[39m
+[31m               },[39m
+[31m               create: {[39m
+[31m                 id: 123456,[39m
+[31m                 name: "opscopilot"[39m
+[31m               }[39m
+[31m             }[39m
+[31m           }[39m
+[31m         },[39m
+[31m         create: {[39m
+[31m           prNumber: 42,[39m
+[31m           title: "Add stale PR detection (updated)",[39m
+[31m           status: "OPEN",[39m
+[31m           updatedAt: new Date("2026-01-07T12:00:00.000Z"),[39m
+[31m           openedAt: new Date("Invalid Date"),[39m
+[31m           closedAt: null,[39m
+[31m           lastCommitAt: new Date("2026-01-07T12:00:00.000Z"),[39m
+[31m           reviewers: [],[39m
+[31m           repository: {[39m
+[31m             connectOrCreate: {[39m
+[31m               where: {[39m
+[31m                 id: 123456[39m
+[31m               },[39m
+[31m               create: {[39m
+[31m                 id: 123456,[39m
+[31m                 name: "opscopilot"[39m
+[31m               }[39m
+[31m             }[39m
+[31m           }[39m
+[31m         }[39m
+[31m       })[39m
+
+[31mInvalid value for argument `openedAt`: Provided Date object is invalid. Expected Date.[39m
+2026-01-07 21:57:45:5745 [31merror[39m: [31mFailed to handle PR event synchronize for #42 [39m
+[31mInvalid `prisma.pullRequest.upsert()` invocation in[39m
+[31mC:\Users\PC\opscopilot\src\services\pullRequest.service.ts:56:35[39m
+
+[31m  53 export async function upsertPullRequest(data: UpsertPullRequest) {[39m
+[31m  54   const { repoId, repoName, prNumber, openedAt, ...updateFields } = data;[39m
+[31m  55 [39m
+[31m→ 56   return await prisma.pullRequest.upsert({[39m
+[31m         where: {[39m
+[31m           repoId_prNumber: {[39m
+[31m             repoId: 123456,[39m
+[31m             prNumber: 42[39m
+[31m           }[39m
+[31m         },[39m
+[31m         update: {[39m
+[31m           title: "Add stale PR detection (updated)",[39m
+[31m           status: "OPEN",[39m
+[31m           updatedAt: new Date("2026-01-07T12:00:00.000Z"),[39m
+[31m           closedAt: null,[39m
+[31m           lastCommitAt: new Date("2026-01-07T12:00:00.000Z"),[39m
+[31m           reviewers: [],[39m
+[31m           repository: {[39m
+[31m             connectOrCreate: {[39m
+[31m               where: {[39m
+[31m                 id: 123456[39m
+[31m               },[39m
+[31m               create: {[39m
+[31m                 id: 123456,[39m
+[31m                 name: "opscopilot"[39m
+[31m               }[39m
+[31m             }[39m
+[31m           }[39m
+[31m         },[39m
+[31m         create: {[39m
+[31m           prNumber: 42,[39m
+[31m           openedAt: new Date("Invalid Date"),[39m
+[31m                     ~~~~~~~~~~~~~~~~~~~~~~~~[39m
+[31m           title: "Add stale PR detection (updated)",[39m
+[31m           status: "OPEN",[39m
+[31m           updatedAt: new Date("2026-01-07T12:00:00.000Z"),[39m
+[31m           closedAt: null,[39m
+[31m           lastCommitAt: new Date("2026-01-07T12:00:00.000Z"),[39m
+[31m           reviewers: [],[39m
+[31m           repository: {[39m
+[31m             connectOrCreate: {[39m
+[31m               where: {[39m
+[31m                 id: 123456[39m
+[31m               },[39m
+[31m               create: {[39m
+[31m                 id: 123456,[39m
+[31m                 name: "opscopilot"[39m
+[31m               }[39m
+[31m             }[39m
+[31m           }[39m
+[31m         }[39m
+[31m       })[39m
+
+[31mInvalid value for argument `openedAt`: Provided Date object is invalid. Expected Date.[39m

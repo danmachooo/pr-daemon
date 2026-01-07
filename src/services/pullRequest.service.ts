@@ -5,6 +5,8 @@ import {
   ClosePullRequestInput,
   UpsertPullRequest,
 } from "./types";
+import { RequestedReviewers } from "../webhooks/handlers/types";
+import Logger from "../utils/logger";
 
 // --- Service Functions ---
 
@@ -18,22 +20,18 @@ export async function prAlreadyExist(data: PullRequestIdentifier) {
 }
 
 export async function closePullRequest(data: ClosePullRequestInput) {
+  const { repoId, prNumber, closedAt } = data;
   if (data.repoId === undefined || data.prNumber === undefined) {
     throw new Error(
       "repoId and prNumber are required to close a Pull Request."
     );
   }
 
-  await prisma.pullRequest.update({
-    where: {
-      repoId_prNumber: {
-        repoId: data.repoId,
-        prNumber: data.prNumber,
-      },
-    },
+  return await prisma.pullRequest.updateMany({
+    where: { repoId, prNumber },
     data: {
       status: PRStatus.CLOSED,
-      closedAt: data.closedAt ?? new Date(),
+      closedAt: closedAt,
       staleAlertAt: null,
       unreviewedAlertAt: null,
     },
@@ -48,35 +46,37 @@ export async function resetPullRequestAlerts(data: PullRequestIdentifier) {
     data: {
       staleAlertAt: null,
       unreviewedAlertAt: null,
+      updatedAt: new Date(),
     },
   });
 }
 
 export async function upsertPullRequest(data: UpsertPullRequest) {
-  // 1️⃣ Upsert repository
-  await prisma.repository.upsert({
-    where: { id: data.repoId },
-    update: { name: data.repoName },
-    create: { id: data.repoId, name: data.repoName },
-  });
+  const { repoId, repoName, prNumber, openedAt, ...updateFields } = data;
 
-  // 2️⃣ Upsert pull request
   return await prisma.pullRequest.upsert({
     where: {
-      repoId_prNumber: { repoId: data.repoId, prNumber: data.prNumber },
+      repoId_prNumber: { repoId, prNumber },
     },
     update: {
-      status: data.status,
-      closedAt: data.closedAt,
+      ...updateFields, // openedAt excluded from updates
+      repository: {
+        connectOrCreate: {
+          where: { id: repoId },
+          create: { id: repoId, name: repoName },
+        },
+      },
     },
     create: {
-      repoId: data.repoId,
-      prNumber: data.prNumber,
-      title: data.title,
-      status: data.status,
-      openedAt: data.openedAt,
-      closedAt: data.closedAt ?? null,
-      lastCommitAt: data.lastCommitAt ?? null,
+      prNumber,
+      openedAt: openedAt || new Date(), // Required for create
+      ...updateFields,
+      repository: {
+        connectOrCreate: {
+          where: { id: repoId },
+          create: { id: repoId, name: repoName },
+        },
+      },
     },
   });
 }
@@ -89,6 +89,44 @@ export async function incrementReviewCount(data: PullRequestIdentifier) {
     data: {
       reviewCount: { increment: 1 },
       lastReviewAt: new Date(),
+    },
+  });
+}
+
+export async function recordReviewSubmission(
+  data: PullRequestIdentifier,
+  reviewData: { id: number; login: string; state: string }
+) {
+  const { repoId, prNumber } = data;
+
+  const pr = await prisma.pullRequest.findUnique({
+    where: { repoId_prNumber: { repoId, prNumber } },
+    select: { completedReviewers: true },
+  });
+
+  const history =
+    (pr?.completedReviewers as unknown as RequestedReviewers[]) || [];
+
+  const alreadyRecorded = history.some(
+    (r) => r.id === reviewData.id && r.state === reviewData.state
+  );
+
+  if (alreadyRecorded) {
+    return;
+  }
+
+  history.push({
+    ...reviewData,
+    submittedAt: new Date(),
+  });
+
+  return await prisma.pullRequest.update({
+    where: { repoId_prNumber: { repoId, prNumber } },
+    data: {
+      reviewCount: { increment: 1 },
+      lastReviewAt: new Date(),
+      completedReviewers: history,
+      unreviewedAlertAt: null,
     },
   });
 }

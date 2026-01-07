@@ -1,15 +1,12 @@
 // --- Shared Types ---
-
 import { PullRequest, Repository } from "../generated/prisma/client";
 import { PRStatus } from "../generated/prisma/enums";
+import { RequestedReviewers } from "../webhooks/handlers/types";
 
-// Type definition for a PR that includes its parent Repository
 export type PullRequestWithRepo = PullRequest & {
   repository: Repository;
 };
 
-/** * Represents the unique composite key used across most PR operations
- */
 export type PullRequestIdentifier = {
   repoId: number;
   prNumber: number;
@@ -17,13 +14,15 @@ export type PullRequestIdentifier = {
 
 // --- Function Specific Types ---
 
+// Use Intersection (&) to include the identifier fields automatically
 export type UpsertPullRequest = PullRequestIdentifier & {
   repoName: string;
   title: string;
   status: PRStatus;
-  openedAt: Date;
+  openedAt?: Date; // Make optional
   closedAt?: Date | null;
   lastCommitAt?: Date | null;
+  reviewers?: RequestedReviewers[];
 };
 
 export type ClosePullRequestInput = PullRequestIdentifier & {

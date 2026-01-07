@@ -37,9 +37,11 @@ model PullRequest {
   reviewCount       Int       @default(0)
   lastReviewAt      DateTime?
   unreviewedAlertAt DateTime?
+  lastCommitAt      DateTime?
+  stalledAlertAt    DateTime?
 
-  lastCommitAt   DateTime?
-  stalledAlertAt DateTime?
+  reviewers          Json?
+  completedReviewers Json?
 
   repository Repository @relation(fields: [repoId], references: [id])
 
