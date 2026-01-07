@@ -4,9 +4,11 @@ import { appConfig } from "../../config/appConfig";
 
 export async function findStalePullRequests() {
   const thresholdDate = new Date();
-  thresholdDate.setDate(thresholdDate.getDate() - appConfig.app.stale_days);
+  thresholdDate.setDate(
+    thresholdDate.getDate() - appConfig.app.stale_days_threshold
+  );
 
-  return prisma.pullRequest.findMany({
+  const stalePrs = await prisma.pullRequest.findMany({
     where: {
       status: PRStatus.OPEN,
       openedAt: {
@@ -17,4 +19,6 @@ export async function findStalePullRequests() {
       repository: true,
     },
   });
+
+  return stalePrs;
 }

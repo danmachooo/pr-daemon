@@ -52,6 +52,8 @@ export type PullRequestMinAggregateOutputType = {
   reviewCount: number | null
   lastReviewAt: Date | null
   unreviewedAlertAt: Date | null
+  lastCommitAt: Date | null
+  stalledAlertAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -68,6 +70,8 @@ export type PullRequestMaxAggregateOutputType = {
   reviewCount: number | null
   lastReviewAt: Date | null
   unreviewedAlertAt: Date | null
+  lastCommitAt: Date | null
+  stalledAlertAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -84,6 +88,8 @@ export type PullRequestCountAggregateOutputType = {
   reviewCount: number
   lastReviewAt: number
   unreviewedAlertAt: number
+  lastCommitAt: number
+  stalledAlertAt: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -116,6 +122,8 @@ export type PullRequestMinAggregateInputType = {
   reviewCount?: true
   lastReviewAt?: true
   unreviewedAlertAt?: true
+  lastCommitAt?: true
+  stalledAlertAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -132,6 +140,8 @@ export type PullRequestMaxAggregateInputType = {
   reviewCount?: true
   lastReviewAt?: true
   unreviewedAlertAt?: true
+  lastCommitAt?: true
+  stalledAlertAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -148,6 +158,8 @@ export type PullRequestCountAggregateInputType = {
   reviewCount?: true
   lastReviewAt?: true
   unreviewedAlertAt?: true
+  lastCommitAt?: true
+  stalledAlertAt?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -251,6 +263,8 @@ export type PullRequestGroupByOutputType = {
   reviewCount: number
   lastReviewAt: Date | null
   unreviewedAlertAt: Date | null
+  lastCommitAt: Date | null
+  stalledAlertAt: Date | null
   createdAt: Date
   updatedAt: Date
   _count: PullRequestCountAggregateOutputType | null
@@ -290,6 +304,8 @@ export type PullRequestWhereInput = {
   reviewCount?: Prisma.IntFilter<"PullRequest"> | number
   lastReviewAt?: Prisma.DateTimeNullableFilter<"PullRequest"> | Date | string | null
   unreviewedAlertAt?: Prisma.DateTimeNullableFilter<"PullRequest"> | Date | string | null
+  lastCommitAt?: Prisma.DateTimeNullableFilter<"PullRequest"> | Date | string | null
+  stalledAlertAt?: Prisma.DateTimeNullableFilter<"PullRequest"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"PullRequest"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PullRequest"> | Date | string
   repository?: Prisma.XOR<Prisma.RepositoryScalarRelationFilter, Prisma.RepositoryWhereInput>
@@ -307,6 +323,8 @@ export type PullRequestOrderByWithRelationInput = {
   reviewCount?: Prisma.SortOrder
   lastReviewAt?: Prisma.SortOrderInput | Prisma.SortOrder
   unreviewedAlertAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastCommitAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  stalledAlertAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   repository?: Prisma.RepositoryOrderByWithRelationInput
@@ -328,6 +346,8 @@ export type PullRequestWhereUniqueInput = Prisma.AtLeast<{
   reviewCount?: Prisma.IntFilter<"PullRequest"> | number
   lastReviewAt?: Prisma.DateTimeNullableFilter<"PullRequest"> | Date | string | null
   unreviewedAlertAt?: Prisma.DateTimeNullableFilter<"PullRequest"> | Date | string | null
+  lastCommitAt?: Prisma.DateTimeNullableFilter<"PullRequest"> | Date | string | null
+  stalledAlertAt?: Prisma.DateTimeNullableFilter<"PullRequest"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"PullRequest"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PullRequest"> | Date | string
   repository?: Prisma.XOR<Prisma.RepositoryScalarRelationFilter, Prisma.RepositoryWhereInput>
@@ -345,6 +365,8 @@ export type PullRequestOrderByWithAggregationInput = {
   reviewCount?: Prisma.SortOrder
   lastReviewAt?: Prisma.SortOrderInput | Prisma.SortOrder
   unreviewedAlertAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastCommitAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  stalledAlertAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.PullRequestCountOrderByAggregateInput
@@ -369,6 +391,8 @@ export type PullRequestScalarWhereWithAggregatesInput = {
   reviewCount?: Prisma.IntWithAggregatesFilter<"PullRequest"> | number
   lastReviewAt?: Prisma.DateTimeNullableWithAggregatesFilter<"PullRequest"> | Date | string | null
   unreviewedAlertAt?: Prisma.DateTimeNullableWithAggregatesFilter<"PullRequest"> | Date | string | null
+  lastCommitAt?: Prisma.DateTimeNullableWithAggregatesFilter<"PullRequest"> | Date | string | null
+  stalledAlertAt?: Prisma.DateTimeNullableWithAggregatesFilter<"PullRequest"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"PullRequest"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"PullRequest"> | Date | string
 }
@@ -383,6 +407,8 @@ export type PullRequestCreateInput = {
   reviewCount?: number
   lastReviewAt?: Date | string | null
   unreviewedAlertAt?: Date | string | null
+  lastCommitAt?: Date | string | null
+  stalledAlertAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   repository: Prisma.RepositoryCreateNestedOneWithoutPullRequestsInput
@@ -400,6 +426,8 @@ export type PullRequestUncheckedCreateInput = {
   reviewCount?: number
   lastReviewAt?: Date | string | null
   unreviewedAlertAt?: Date | string | null
+  lastCommitAt?: Date | string | null
+  stalledAlertAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -414,6 +442,8 @@ export type PullRequestUpdateInput = {
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   lastReviewAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   unreviewedAlertAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastCommitAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  stalledAlertAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   repository?: Prisma.RepositoryUpdateOneRequiredWithoutPullRequestsNestedInput
@@ -431,6 +461,8 @@ export type PullRequestUncheckedUpdateInput = {
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   lastReviewAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   unreviewedAlertAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastCommitAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  stalledAlertAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -447,6 +479,8 @@ export type PullRequestCreateManyInput = {
   reviewCount?: number
   lastReviewAt?: Date | string | null
   unreviewedAlertAt?: Date | string | null
+  lastCommitAt?: Date | string | null
+  stalledAlertAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -461,6 +495,8 @@ export type PullRequestUpdateManyMutationInput = {
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   lastReviewAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   unreviewedAlertAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastCommitAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  stalledAlertAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -477,6 +513,8 @@ export type PullRequestUncheckedUpdateManyInput = {
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   lastReviewAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   unreviewedAlertAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastCommitAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  stalledAlertAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -508,6 +546,8 @@ export type PullRequestCountOrderByAggregateInput = {
   reviewCount?: Prisma.SortOrder
   lastReviewAt?: Prisma.SortOrder
   unreviewedAlertAt?: Prisma.SortOrder
+  lastCommitAt?: Prisma.SortOrder
+  stalledAlertAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -531,6 +571,8 @@ export type PullRequestMaxOrderByAggregateInput = {
   reviewCount?: Prisma.SortOrder
   lastReviewAt?: Prisma.SortOrder
   unreviewedAlertAt?: Prisma.SortOrder
+  lastCommitAt?: Prisma.SortOrder
+  stalledAlertAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -547,6 +589,8 @@ export type PullRequestMinOrderByAggregateInput = {
   reviewCount?: Prisma.SortOrder
   lastReviewAt?: Prisma.SortOrder
   unreviewedAlertAt?: Prisma.SortOrder
+  lastCommitAt?: Prisma.SortOrder
+  stalledAlertAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -618,6 +662,8 @@ export type PullRequestCreateWithoutRepositoryInput = {
   reviewCount?: number
   lastReviewAt?: Date | string | null
   unreviewedAlertAt?: Date | string | null
+  lastCommitAt?: Date | string | null
+  stalledAlertAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -633,6 +679,8 @@ export type PullRequestUncheckedCreateWithoutRepositoryInput = {
   reviewCount?: number
   lastReviewAt?: Date | string | null
   unreviewedAlertAt?: Date | string | null
+  lastCommitAt?: Date | string | null
+  stalledAlertAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -678,6 +726,8 @@ export type PullRequestScalarWhereInput = {
   reviewCount?: Prisma.IntFilter<"PullRequest"> | number
   lastReviewAt?: Prisma.DateTimeNullableFilter<"PullRequest"> | Date | string | null
   unreviewedAlertAt?: Prisma.DateTimeNullableFilter<"PullRequest"> | Date | string | null
+  lastCommitAt?: Prisma.DateTimeNullableFilter<"PullRequest"> | Date | string | null
+  stalledAlertAt?: Prisma.DateTimeNullableFilter<"PullRequest"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"PullRequest"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PullRequest"> | Date | string
 }
@@ -693,6 +743,8 @@ export type PullRequestCreateManyRepositoryInput = {
   reviewCount?: number
   lastReviewAt?: Date | string | null
   unreviewedAlertAt?: Date | string | null
+  lastCommitAt?: Date | string | null
+  stalledAlertAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -707,6 +759,8 @@ export type PullRequestUpdateWithoutRepositoryInput = {
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   lastReviewAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   unreviewedAlertAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastCommitAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  stalledAlertAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -722,6 +776,8 @@ export type PullRequestUncheckedUpdateWithoutRepositoryInput = {
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   lastReviewAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   unreviewedAlertAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastCommitAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  stalledAlertAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -737,6 +793,8 @@ export type PullRequestUncheckedUpdateManyWithoutRepositoryInput = {
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   lastReviewAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   unreviewedAlertAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastCommitAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  stalledAlertAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -755,6 +813,8 @@ export type PullRequestSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   reviewCount?: boolean
   lastReviewAt?: boolean
   unreviewedAlertAt?: boolean
+  lastCommitAt?: boolean
+  stalledAlertAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   repository?: boolean | Prisma.RepositoryDefaultArgs<ExtArgs>
@@ -772,6 +832,8 @@ export type PullRequestSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   reviewCount?: boolean
   lastReviewAt?: boolean
   unreviewedAlertAt?: boolean
+  lastCommitAt?: boolean
+  stalledAlertAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   repository?: boolean | Prisma.RepositoryDefaultArgs<ExtArgs>
@@ -789,6 +851,8 @@ export type PullRequestSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   reviewCount?: boolean
   lastReviewAt?: boolean
   unreviewedAlertAt?: boolean
+  lastCommitAt?: boolean
+  stalledAlertAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   repository?: boolean | Prisma.RepositoryDefaultArgs<ExtArgs>
@@ -806,11 +870,13 @@ export type PullRequestSelectScalar = {
   reviewCount?: boolean
   lastReviewAt?: boolean
   unreviewedAlertAt?: boolean
+  lastCommitAt?: boolean
+  stalledAlertAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type PullRequestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "repoId" | "prNumber" | "title" | "status" | "openedAt" | "closedAt" | "staleAlertAt" | "reviewCount" | "lastReviewAt" | "unreviewedAlertAt" | "createdAt" | "updatedAt", ExtArgs["result"]["pullRequest"]>
+export type PullRequestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "repoId" | "prNumber" | "title" | "status" | "openedAt" | "closedAt" | "staleAlertAt" | "reviewCount" | "lastReviewAt" | "unreviewedAlertAt" | "lastCommitAt" | "stalledAlertAt" | "createdAt" | "updatedAt", ExtArgs["result"]["pullRequest"]>
 export type PullRequestInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   repository?: boolean | Prisma.RepositoryDefaultArgs<ExtArgs>
 }
@@ -838,6 +904,8 @@ export type $PullRequestPayload<ExtArgs extends runtime.Types.Extensions.Interna
     reviewCount: number
     lastReviewAt: Date | null
     unreviewedAlertAt: Date | null
+    lastCommitAt: Date | null
+    stalledAlertAt: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["pullRequest"]>
@@ -1275,6 +1343,8 @@ export interface PullRequestFieldRefs {
   readonly reviewCount: Prisma.FieldRef<"PullRequest", 'Int'>
   readonly lastReviewAt: Prisma.FieldRef<"PullRequest", 'DateTime'>
   readonly unreviewedAlertAt: Prisma.FieldRef<"PullRequest", 'DateTime'>
+  readonly lastCommitAt: Prisma.FieldRef<"PullRequest", 'DateTime'>
+  readonly stalledAlertAt: Prisma.FieldRef<"PullRequest", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"PullRequest", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"PullRequest", 'DateTime'>
 }

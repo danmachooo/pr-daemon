@@ -7,8 +7,6 @@ import {
 export const githubWebhookHandler = async (req: Request, res: Response) => {
   const event = req.headers["x-github-event"];
   const payload = req.body;
-  console.log("Payload: ", payload);
-  console.log("Event: ", event);
 
   switch (event) {
     case "pull_request":

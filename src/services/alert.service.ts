@@ -1,41 +1,46 @@
-import { prisma } from "../lib/prisma";
+import { getHoursAgo } from "../helpers/hoursAgo";
+import { markStaleAlert, markUnreviewedAlert } from "./pullRequest.service";
 import { sendSlackAlert } from "./slack.service";
 
 export async function alertOnStalePRs(stalePrs: any[]) {
   for (const pr of stalePrs) {
-    if (pr.alertedAt) continue;
+    if (pr.staleAlertAt) continue;
 
-    const message = `
-🚨 *Stale Pull Request Detected*
-• Repo: ${pr.repository.name}
-• PR: #${pr.prNumber} – ${pr.title}
-• Opened: ${pr.openedAt.toDateString()} 
-`;
+    const message =
+      `*🚨 Stale Pull Request Detected*\n` +
+      `*< Pull Request | #${pr.prNumber} – ${pr.title}>*\n` +
+      `> *Repo:* ${pr.repository.name}\n` +
+      `> *Opened:* ${pr.openedAt.toLocaleDateString()} (${getHoursAgo(
+        pr.openedAt
+      )})`;
 
     await sendSlackAlert(message);
-
-    await prisma.pullRequest.update({
-      where: { id: pr.id },
-      data: { staleAlertAt: new Date() },
-    });
+    await markStaleAlert(pr.id);
   }
 }
 
 export async function alertOnUnreviewedPRs(prs: any[]) {
   for (const pr of prs) {
-    await sendSlackAlert(
-      `👀 *Unreviewed PR*\n\n` +
-        `PR #${pr.prNumber}: ${pr.title}\n` +
-        `Repo: ${pr.repository.name}`
-    );
+    const message =
+      `*👀 PR Needs Review*\n` +
+      `*< Pull Request | #${pr.prNumber} – ${pr.title}>*\n` +
+      `> *Repo:* ${pr.repository.name}\n` +
+      `> *Status:* Awaiting first review`;
 
-    await prisma.pullRequest.update({
-      where: {
-        id: pr.id,
-      },
-      data: {
-        unreviewedAlertAt: new Date(),
-      },
-    });
+    await sendSlackAlert(message);
+    await markUnreviewedAlert(pr.id);
+  }
+}
+
+export async function alertOnStalledPRs(prs: any[]) {
+  for (const pr of prs) {
+    const message =
+      `*🚧 PR is Stalled*\n` +
+      `*< Pull Request | #${pr.prNumber} – ${pr.title}>*\n` +
+      `> *Repo:* ${pr.repository.name}\n` +
+      `> *Last Activity:* Reviewed ${getHoursAgo(pr.lastReviewAt)}\n` +
+      `> *Action:* Author needs to address feedback.`;
+
+    await sendSlackAlert(message);
   }
 }

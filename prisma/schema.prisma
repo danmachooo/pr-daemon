@@ -38,6 +38,9 @@ model PullRequest {
   lastReviewAt      DateTime?
   unreviewedAlertAt DateTime?
 
+  lastCommitAt   DateTime?
+  stalledAlertAt DateTime?
+
   repository Repository @relation(fields: [repoId], references: [id])
 
   createdAt DateTime @default(now())

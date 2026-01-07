@@ -1,55 +1,54 @@
 import cron from "node-cron";
+import Logger from "../utils/logger";
 import { findStalePullRequests } from "../services/stalePr.service";
+import { findUnreviewedPullRequests } from "../services/unreviewedPr.service";
+import { findStalledPrs } from "../services/stalledPr.service";
 import {
   alertOnStalePRs,
+  alertOnStalledPRs,
   alertOnUnreviewedPRs,
 } from "../services/alert.service";
-import { findUnreviewedPullRequests } from "../services/unreviewedPr.service";
 
-export function startCronJobs() {
-  // ----- Stale PRs -----
-  cron.schedule("*/1 * * * *", async () => {
+export async function startCronJobs() {
+  // Runs every minute at the 5-second mark
+  cron.schedule("3 * * * * *", async () => {
+    Logger.info("Cron: Starting PR Health Checks...");
+
     try {
-      console.log("⏰ Checking for stale PRs...");
+      const [stalePRs, unreviewedPrs, stalledPrs] = await Promise.all([
+        findStalePullRequests(),
+        findUnreviewedPullRequests(),
+        findStalledPrs(),
+      ]);
 
-      const stalePRs = await findStalePullRequests();
-
-      console.log(`⚠️ Found ${stalePRs.length} stale PR(s)`);
-
-      for (const pr of stalePRs) {
-        const repoName = pr.repository?.name ?? "Unknown repo";
-        if (pr.staleAlertAt) {
-          console.log(
-            `Alert already sent for PR #${pr.prNumber} in ${repoName}`
-          );
-          continue;
-        }
-        console.log(`PR #${pr.prNumber} in ${repoName} is stale`);
+      // 1. Handle Stale
+      if (stalePRs.length > 0) {
+        Logger.warn(`Cron: Found ${stalePRs.length} stale PR(s)`);
+        await alertOnStalePRs(stalePRs);
       }
 
-      await alertOnStalePRs(stalePRs);
-    } catch (err) {
-      console.error("[ERROR] Stale PR cron failed:", err);
-    }
-  });
-
-  // ----- Unreviewed PRs -----
-  cron.schedule("*/1 * * * *", async () => {
-    try {
-      console.log("⏰ Checking unreviewed PRs...");
-
-      const prs = await findUnreviewedPullRequests();
-
-      console.log(`⚠️ Found ${prs.length} unreviewed PR(s)`);
-
-      for (const pr of prs) {
-        const repoName = pr.repository?.name ?? "Unknown repo";
-        console.log(`Unreviewed PR #${pr.prNumber} in ${repoName}`);
+      // 2. Handle Unreviewed
+      if (unreviewedPrs.length > 0) {
+        Logger.warn(`Cron: Found ${unreviewedPrs.length} unreviewed PR(s)`);
+        await alertOnUnreviewedPRs(unreviewedPrs);
       }
 
-      await alertOnUnreviewedPRs(prs);
-    } catch (err) {
-      console.error("[ERROR] Unreviewed PR cron failed:", err);
+      // 3. Handle Stalled
+      if (stalledPrs.length > 0) {
+        Logger.warn(`Cron: Found ${stalledPrs.length} stalled PR(s)`);
+        await alertOnStalledPRs(stalledPrs);
+      }
+
+      // --- ADDED SUMMARY LOG ---
+      Logger.info("Cron: PR Health Checks finished.", {
+        results: {
+          stale: stalePRs.length,
+          unreviewed: unreviewedPrs.length,
+          stalled: stalledPrs.length,
+        },
+      });
+    } catch (err: any) {
+      Logger.error("Cron: Global PR check failed", { error: err.message });
     }
   });
 }

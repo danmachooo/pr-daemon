@@ -1,5 +1,6 @@
 import { prisma } from "../lib/prisma";
 import { PRStatus } from "../generated/prisma/enums";
+import { awaitShutdown } from "./../../node_modules/effect/src/TPubSub";
 
 export type UpsertPullRequest = {
   repoId: number;
@@ -9,6 +10,7 @@ export type UpsertPullRequest = {
   status: PRStatus;
   openedAt: Date;
   closedAt?: Date | null;
+  lastCommitAt?: Date | null;
 };
 
 export async function closePullRequest(data: {
@@ -81,6 +83,7 @@ export async function upsertPullRequest(data: UpsertPullRequest) {
       status: data.status,
       openedAt: data.openedAt,
       closedAt: data.closedAt ?? null,
+      lastCommitAt: data.lastCommitAt ?? null,
     },
   });
 }
@@ -101,6 +104,28 @@ export async function incrementReviewCount({
     data: {
       reviewCount: { increment: 1 },
       lastReviewAt: new Date(),
+    },
+  });
+}
+
+export async function markUnreviewedAlert(id: number) {
+  await prisma.pullRequest.update({
+    where: {
+      id,
+    },
+    data: {
+      unreviewedAlertAt: new Date(),
+    },
+  });
+}
+
+export async function markStaleAlert(id: number) {
+  await prisma.pullRequest.update({
+    where: {
+      id,
+    },
+    data: {
+      staleAlertAt: new Date(),
     },
   });
 }
