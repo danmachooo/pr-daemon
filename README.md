@@ -108,21 +108,15 @@ This guarantees:
 ## Example Slack Alert
 
 ```
-🚨 PR Review Ownership Alert
+​🚨 PR Review Ownership Alert
 
-PR: #456
-Rule violated: No primary reviewer after 24h
+​PR: #456 - Update Authentication Logic
 
-Detected reviewers:
-- alice
-- bob
-- carol
+Rule Violated: No primary reviewer assigned after 24h
 
-⚠️ Problem:
-No single owner → delayed review
+​Detected Reviewers: ​@alice, @bob, ​@carol
 
-Suggested action:
-• Assign ONE primary reviewer
+​⚠️ Problem: No single owner has been designated, leading to potential review delays.
 ```
 
 Clear. Actionable. No noise.
