@@ -1,8 +1,8 @@
-## OpsCopilot
+## PR-daemon
 
-**OpsCopilot is a lightweight tool that helps small engineering teams surface workflow issues earlier using rule-based Slack alerts — without notification spam.**
+**PR-daemon is a lightweight tool that helps small engineering teams surface workflow issues earlier using rule-based Slack alerts — without notification spam.**
 
-## Instead of flooding Slack with GitHub events, OpsCopilot encodes workflow standards (e.g. “PRs shouldn’t stay open too long”) and only alerts when those standards are violated.
+## Instead of flooding Slack with GitHub events, PR-daemon encodes workflow standards (e.g. “PRs shouldn’t stay open too long”) and only alerts when those standards are violated.
 
 ## Why I Built This
 
@@ -14,7 +14,7 @@ Most GitHub–Slack integrations:
 - create alert fatigue
 - require humans to interpret noise
 
-OpsCopilot takes a different approach:
+PR-daemon takes a different approach:
 
 > _If nothing is wrong, it stays silent._
 
