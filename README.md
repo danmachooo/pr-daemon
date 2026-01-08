@@ -132,7 +132,7 @@ This guarantees:
 > Current Reviewers: _None assigned_
 > Status: Awaiting first review
 ```
-####🚧 Example: Stalled Pull Request Alert
+#### 🚧 Example: Stalled Pull Request Alert
 ```
 🚧 PR is Stalled
 < Pull Request | #33 – Refactor alert scheduler>
@@ -141,7 +141,7 @@ This guarantees:
 > Pending Reviewers: @alice, @bob
 > Action: Please check if a follow-up is needed.
 ```
-####If no one has reviewed it yet:
+#### If no one has reviewed it yet:
 ```
 🚧 PR is Stalled
 < Pull Request | #34 – Initial Redis integration>
