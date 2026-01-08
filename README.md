@@ -1,128 +1,233 @@
-## PR-daemon
+# pr-daemon
 
-**PR-daemon is a lightweight tool that helps small engineering teams surface workflow issues earlier using rule-based Slack alerts — without notification spam.**
+**Rule-based PR accountability for teams that value signal over noise.**
 
-## Instead of flooding Slack with GitHub events, PR-daemon encodes workflow standards (e.g. “PRs shouldn’t stay open too long”) and only alerts when those standards are violated.
+pr-daemon is a lightweight daemon that monitors GitHub pull requests and alerts teams **only when workflow standards are violated** — not on every event.
 
-## Why I Built This
+Instead of flooding Slack with PR activity, pr-daemon encodes **opinionated review rules** (ownership, timeliness, and progress) and stays silent unless intervention is required.
 
-Small teams don’t lack tools — they lack **signal**.
+---
+
+## Why pr-daemon?
 
 Most GitHub–Slack integrations:
 
-- forward every event
-- create alert fatigue
-- require humans to interpret noise
+* Forward *every* event
+* Create alert fatigue
+* Lack ownership enforcement
+* Provide no opinion on what “healthy” looks like
 
-PR-daemon takes a different approach:
+**pr-daemon is different.**
 
-> _If nothing is wrong, it stays silent._
+It answers one question:
 
-This project explores how to build **event-driven systems**, **time-based rules**, and **non-spammy alerting** — the kind of problems real SaaS products face.
+> *“Is this PR progressing the way our team expects?”*
 
----
-
-## Core MVP Feature
-
-### 🚨 Stale Pull Request Detection
-
-OpsCopilot detects pull requests that remain open longer than an acceptable threshold and sends a **single actionable Slack alert**.
-
-- No dashboards to monitor
-- No repeated alerts
-- Automatic reset when PRs are closed
+If yes → silence
+If no → a single, actionable alert
 
 ---
 
-## How It Works (High Level)
+## Core Principles
+
+* **Signal over noise** — alerts fire once per violation
+* **Opinionated rules** — encode workflow standards, not events
+* **Ownership matters** — PRs must have a responsible reviewer
+* **Set and forget** — minimal setup, minimal UI
+* **Stateless UI, stateful backend** — correctness over dashboards
+
+---
+
+## What pr-daemon Detects (Phase 1–4)
+
+pr-daemon continuously evaluates pull requests using persisted state and rule timestamps.
+
+### ✅ Implemented Rules
+
+#### 1. Stale PRs
+
+Alerts when a PR has no activity beyond a configurable threshold.
+
+> *“This PR hasn’t moved in X hours — is it blocked?”*
+
+---
+
+#### 2. Unreviewed PRs
+
+Alerts when a PR has no reviews within the expected review window.
+
+> *“This PR is waiting for review longer than expected.”*
+
+---
+
+#### 3. Reviewed but Stalled PRs
+
+Alerts when reviews exist, but the PR is no longer progressing.
+
+> *“Reviews are in, but no action is happening.”*
+
+---
+
+### Ownership & Review Tracking
+
+Each PR tracks:
+
+* Requested reviewers
+* Completed reviewers
+* Pending reviewers
+
+This enables pr-daemon to:
+
+* Detect missing ownership
+* Identify stalled reviews
+* Show *who* is responsible without tagging spam
+
+---
+
+## Alert Behavior (Important)
+
+pr-daemon **never spams**.
+
+Each rule has a corresponding alert timestamp:
+
+* `staleAlertAt`
+* `unreviewedAlertAt`
+* `stalledAlertAt`
+
+An alert is sent **only if the alert timestamp is `null`**.
+Once fired, pr-daemon stays quiet unless the PR transitions into a new violation state.
+
+This guarantees:
+
+* One alert per violation
+* No repeated reminders
+* High trust in alerts
+
+---
+
+## Example Slack Alert
 
 ```
-GitHub Webhook
-   ↓
-Event Ingestion (Express)
-   ↓
-Persistent State (Prisma + DB)
-   ↓
-Background Rule Evaluation (Cron)
-   ↓
-Deduplicated Slack Alerts
+🚨 PR Review Ownership Alert
+
+PR: #456
+Rule violated: No primary reviewer after 24h
+
+Detected reviewers:
+- alice
+- bob
+- carol
+
+⚠️ Problem:
+No single owner → delayed review
+
+Suggested action:
+• Assign ONE primary reviewer
 ```
+
+Clear. Actionable. No noise.
 
 ---
 
-## Key Design Decisions
+## How It Works
 
-### 1. Rule-Based, Not Event-Based
+1. GitHub sends webhook events (PR opened, reviewed, updated)
+2. pr-daemon ingests and normalizes events
+3. PR state is persisted (reviews, reviewers, timestamps)
+4. Rules are evaluated continuously
+5. Alerts fire **only when a rule is violated**
 
-Staleness is a **time-based problem**, so detection runs via scheduled jobs rather than real-time events.
+---
 
-### 2. Alert Deduplication by Design
+## Setup (Current)
 
-Each stale PR can only trigger **one alert per incident**, enforced via database state.
+1. Deploy pr-daemon
+2. Configure Slack Incoming Webhook
+3. Register GitHub Webhook (PR + Review events)
+4. Adjust rule thresholds via config
 
-### 3. Thin Webhook Handlers
+No UI required to get value.
 
-Webhook endpoints only ingest and normalize data — business logic lives in services.
+---
 
-### 4. Backend-First Architecture
+## Configuration
 
-The backend is the product. The frontend exists only for configuration and visibility.
+All rule thresholds are centralized and versioned in a config layer:
+
+* Stale PR threshold
+* Review wait time
+* Stall detection window
+
+This avoids premature auth/UI complexity while keeping behavior explicit and predictable.
+
+---
+
+## Roadmap
+
+### Phase 5 (Planned)
+
+* Hosted web app
+* OAuth (GitHub / Google)
+* Team onboarding flow
+* UI-based threshold configuration
+* Multi-team support
+
+### Phase 6 (Optional)
+
+* Per-repo rules
+* Alert history
+* Audit trail
+* Read-only dashboards
+
+---
+
+## Who This Is For
+
+pr-daemon is ideal for:
+
+* Startup teams
+* Remote teams
+* Junior-heavy teams
+* Engineering managers
+* Founders who want accountability without micromanagement
+
+It is **not** for teams that want:
+
+* Every PR event
+* Dashboards for everything
+* Heavy process tooling
 
 ---
 
 ## Tech Stack
 
-- **Backend:** Node.js, Express, TypeScript
-- **Database:** Prisma ORM
-- **Background Jobs:** node-cron
-- **Integrations:** GitHub Webhooks, Slack Incoming Webhooks
-- **Frontend (planned):** Next.js (for configuration UI)
+* Node.js + TypeScript
+* Express
+* PostgreSQL (Neon)
+* GitHub Webhooks
+* Slack Incoming Webhooks
+
+Designed as an **event-driven, stateful backend service**.
 
 ---
 
-## MVP Scope (Intentional)
+## Why This Project Exists
 
-### Included
+pr-daemon was built to:
 
-- GitHub pull request webhooks
-- Persistent PR state tracking
-- Time-based stale detection
-- Slack alerts with deduplication
+* Solve a real workflow problem
+* Avoid alert fatigue
+* Demonstrate production-grade backend thinking
+* Serve as a foundation for a focused, paid utility
 
-### Excluded
-
-- AI / analytics dashboards
-- Productivity scoring
-- Billing / auth
-- Complex UI
-
-This keeps the product focused and production-realistic.
+This is not a growth-hack SaaS.
+It’s a tool that earns its place by staying quiet.
 
 ---
 
-## What This Project Demonstrates
+## License
 
-- Event-driven backend design
-- Idempotent webhook handling
-- Rule-based business logic
-- Background job orchestration
-- Alert fatigue prevention
-- SaaS-level architectural thinking
+MIT
 
 ---
 
-## Demo Scenario
-
-1. A pull request is opened on GitHub
-2. OpsCopilot stores the PR state
-3. Time passes without merging
-4. A background job detects the PR is stale
-5. OpsCopilot sends **one Slack alert**
-6. The PR is merged → alert state resets
-
----
-
-## Status
-
-**MVP complete.**
-Future work includes configuration UI, multi-team support, and additional workflow rules.
