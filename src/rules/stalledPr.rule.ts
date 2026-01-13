@@ -4,7 +4,7 @@ import { prisma } from "../lib/prisma";
 
 export async function findStalledPrs() {
   const thresholdDate = new Date(
-    Date.now() - appConfig.app.stall_hours_threshold * 60 * 60 * 1000
+    Date.now() - appConfig.thresholds.stallHours * 60 * 60 * 1000
   );
 
   return await prisma.pullRequest.findMany({

@@ -3,7 +3,7 @@ import { PRStatus } from "../generated/prisma/enums";
 import { prisma } from "../lib/prisma";
 
 export async function findUnreviewedPullRequests() {
-  const cutoff = new Date(Date.now() - appConfig.app._24hr);
+  const cutoff = new Date(Date.now() - appConfig.app.msPerDay);
 
   const unreviewedPrs = await prisma.pullRequest.findMany({
     where: {

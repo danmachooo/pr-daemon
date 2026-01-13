@@ -1,9 +1,32 @@
 import "dotenv/config";
+import { z } from "zod";
 
-export const env = {
-  port: process.env.PORT || 3000,
-  node_env: process.env.NODE_ENV || "development",
-  db_url: process.env.DATABASE_URL || "No database url.",
-  stale_days_default: process.env.STALE_DAYS_DEFAULT || 3,
-  slack_webhook_url: process.env.SLACK_WEBHOOK_URL || "No slack webhook",
-};
+const envSchema = z.object({
+  PORT: z.coerce.number().default(3000),
+  NODE_ENV: z
+    .enum(["development", "production", "test"])
+    .default("development"),
+  DATABASE_URL: z.string().min(1),
+  STALE_DAYS_DEFAULT: z.coerce.number().positive().default(3),
+  SLACK_WEBHOOK_URL: z.string().min(1),
+  BETTER_AUTH_SECRET: z.string().min(1),
+  BETTER_AUTH_URL: z.string().min(1),
+  GITHUB_CLIENT_ID: z.string().min(1),
+  GITHUB_CLIENT_SECRET: z.string().min(1),
+});
+
+function validateEnv() {
+  const parsed = envSchema.safeParse(process.env);
+
+  if (!parsed.success) {
+    console.error("❌ Invalid environment variables:");
+    parsed.error.issues.forEach((issue) => {
+      console.error(`  ${issue.path.join(".")}: ${issue.message}`);
+    });
+    throw new Error("Invalid environment variables");
+  }
+
+  return parsed.data;
+}
+
+export const env = validateEnv();

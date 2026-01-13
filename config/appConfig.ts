@@ -1,13 +1,30 @@
 import { env } from "./env";
 
+const MS_PER_DAY = 24 * 60 * 60 * 1000;
+const STALL_HOURS = 48;
+
 export const appConfig = {
   app: {
-    port: Number(env.port),
-    _24hr: 24 * 60 * 60 * 1000,
-    node_env: env.node_env,
-    stale_days_threshold: Number(env.stale_days_default),
-    stall_hours_threshold: 48,
-    slack_webhook_url: env.slack_webhook_url,
+    port: env.PORT,
+    nodeEnv: env.NODE_ENV,
+    msPerDay: MS_PER_DAY,
   },
-  db_url: env.db_url,
-};
+  thresholds: {
+    staleDays: env.STALE_DAYS_DEFAULT,
+    stallHours: STALL_HOURS,
+  },
+  database: {
+    url: env.DATABASE_URL,
+  },
+  integrations: {
+    slackWebhookUrl: env.SLACK_WEBHOOK_URL,
+  },
+  auth: {
+    secret: env.BETTER_AUTH_SECRET,
+    url: env.BETTER_AUTH_URL,
+    github: {
+      clientId: env.GITHUB_CLIENT_ID,
+      clientSecret: env.GITHUB_CLIENT_SECRET,
+    },
+  },
+} as const;

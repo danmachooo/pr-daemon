@@ -5,7 +5,7 @@ import { appConfig } from "../../config/appConfig";
 export async function findStalePullRequests() {
   const thresholdDate = new Date();
   thresholdDate.setDate(
-    thresholdDate.getDate() - appConfig.app.stale_days_threshold
+    thresholdDate.getDate() - appConfig.thresholds.staleDays
   );
 
   const stalePrs = await prisma.pullRequest.findMany({
