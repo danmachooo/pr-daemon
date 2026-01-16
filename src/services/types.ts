@@ -18,6 +18,8 @@ export type UpsertPullRequest = PullRequestIdentifier & {
   repoName: string;
   title: string;
   status: PRStatus;
+  repoFullName: string; // Add this
+  teamId: number;
   openedAt?: Date; // Make optional
   closedAt?: Date | null;
   lastCommitAt?: Date | null;

@@ -49,29 +49,47 @@ export async function resetPullRequestAlerts(data: PullRequestIdentifier) {
 }
 
 export async function upsertPullRequest(data: UpsertPullRequest) {
-  const { repoId, repoName, prNumber, openedAt, ...updateFields } = data;
+  const {
+    repoId,
+    repoName,
+    repoFullName,
+    teamId,
+    prNumber,
+    openedAt,
+    ...updateFields
+  } = data;
 
   return await prisma.pullRequest.upsert({
     where: {
       repoId_prNumber: { repoId, prNumber },
     },
     update: {
-      ...updateFields, // openedAt excluded from updates
+      ...updateFields,
       repository: {
         connectOrCreate: {
           where: { id: repoId },
-          create: { id: repoId, name: repoName },
+          create: {
+            id: repoId,
+            name: repoName,
+            fullName: repoFullName, // Add this
+            teamId: teamId, // Add this
+          },
         },
       },
     },
     create: {
       prNumber,
-      openedAt: openedAt || new Date(), // Required for create
+      openedAt: openedAt || new Date(),
       ...updateFields,
       repository: {
         connectOrCreate: {
           where: { id: repoId },
-          create: { id: repoId, name: repoName },
+          create: {
+            id: repoId,
+            name: repoName,
+            fullName: repoFullName, // Add this
+            teamId: teamId, // Add this
+          },
         },
       },
     },
