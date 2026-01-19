@@ -1,4 +1,5 @@
 // src/webhooks/handlers/pullRequest.handler.ts
+import { mapGitHubPayload } from "../../helpers/mapGithubPayload";
 import {
   PullRequestEvent,
   PullRequestReviewEvent,
@@ -10,7 +11,6 @@ import {
   recordReviewSubmission,
 } from "../../services/pullRequest.service";
 import Logger from "../../utils/logger";
-import { mapGitHubPayload } from "./pullRequest.helper.ts";
 
 export async function handlePullRequestEvent(payload: PullRequestEvent) {
   const { action, pull_request, repository } = payload;
@@ -40,7 +40,7 @@ export async function handlePullRequestEvent(payload: PullRequestEvent) {
 
         if (result.count === 0) {
           Logger.warn(
-            `Attempted to close untracked PR: ${repository.name}#${prNumber}`
+            `Attempted to close untracked PR: ${repository.name}#${prNumber}`,
           );
         }
         break;
@@ -54,7 +54,7 @@ export async function handlePullRequestEvent(payload: PullRequestEvent) {
 }
 
 export async function handlePullRequestReviewEvent(
-  payload: PullRequestReviewEvent
+  payload: PullRequestReviewEvent,
 ) {
   const { action, pull_request, repository, review } = payload;
 
@@ -70,12 +70,12 @@ export async function handlePullRequestReviewEvent(
         id: review.user.id,
         login: review.user.login,
         state: review.state,
-      }
+      },
     );
   } catch (error) {
     Logger.error(
       `Failed to record review for PR #${pull_request.number}`,
-      error
+      error,
     );
   }
 }

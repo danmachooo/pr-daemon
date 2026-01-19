@@ -1,7 +1,8 @@
+import { appConfig } from "../../config/appConfig";
 import { decryptAesGcm, encryptAesGcm } from "../utils/crypto";
 
 function loadKeys(): Buffer[] {
-  const raw = process.env.SECRETS_KEYS_HEX;
+  const raw = appConfig.secrets.key_hex;
   if (!raw) throw new Error("Missing SECRETS_KEYS_HEX env var");
 
   const keys = raw
@@ -15,7 +16,7 @@ function loadKeys(): Buffer[] {
   for (const k of keys) {
     if (k.length !== 32) {
       throw new Error(
-        "Each SECRETS_KEYS_HEX key must be 32 bytes (64 hex chars)"
+        "Each SECRETS_KEYS_HEX key must be 32 bytes (64 hex chars)",
       );
     }
   }
@@ -26,7 +27,7 @@ function loadKeys(): Buffer[] {
 // v1 envelope: "v1:<base64(iv+tag+ciphertext)>"
 export function encryptSecret(
   plain?: string | null,
-  aad?: string
+  aad?: string,
 ): string | null {
   if (!plain) return null;
 

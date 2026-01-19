@@ -22,8 +22,18 @@ export const updateSlackSchema = z.object({
     .url("Invalid URL")
     .refine(
       (u) => u.startsWith("https://hooks.slack.com/services/"),
-      "Invalid Slack webhook URL"
+      "Invalid Slack webhook URL",
     ),
+});
+
+export const onboardTeamSchema = z.object({
+  name: z.string().min(1, "Team name is required"),
+  slackWebhookUrl: z
+    .string()
+    .url("Slack webhook must be a valid URL")
+    .optional(),
+  configs: z.record(z.string(), z.unknown()).optional().default({}),
+  provisionGithub: z.boolean().optional().default(true),
 });
 
 // No input needed; server generates secret

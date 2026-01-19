@@ -59,7 +59,7 @@ export async function createTeamForOwner(ownerId: string, name: string) {
 export async function updateTeamMeta(
   teamId: number,
   ownerId: string,
-  data: { name?: string }
+  data: { name?: string },
 ) {
   // Ownership enforcement in query
   return prisma.team
@@ -78,7 +78,7 @@ export async function updateTeamMeta(
 export async function updateTeamConfigs(
   teamId: number,
   ownerId: string,
-  configs: Record<string, unknown>
+  configs: Record<string, unknown>,
 ) {
   // Ensure the team belongs to owner
   const team = await prisma.team.findFirst({
@@ -98,7 +98,7 @@ export async function updateTeamConfigs(
 export async function setSlackWebhook(
   teamId: number,
   ownerId: string,
-  slackWebhookUrl: string
+  slackWebhookUrl: string,
 ) {
   const team = await prisma.team.findFirst({
     where: { id: teamId, ownerId },
@@ -119,7 +119,7 @@ export async function setSlackWebhook(
 export async function provisionGithubWebhook(
   teamId: number,
   ownerId: string,
-  baseUrl: string
+  baseUrl: string,
 ) {
   const team = await prisma.team.findFirst({
     where: { id: teamId, ownerId },
@@ -153,4 +153,74 @@ export async function updateLastSlackSent(teamId: number) {
     where: { id: teamId },
     data: { lastSlackSentAt: new Date() },
   });
+}
+
+export async function onboardTeamForOwner(input: {
+  ownerId: string;
+  name: string;
+  slackWebhookUrl?: string;
+  configs: Record<string, unknown>;
+  provisionGithub: boolean;
+  baseUrl: string;
+}) {
+  const { ownerId, name, slackWebhookUrl, configs, provisionGithub, baseUrl } =
+    input;
+
+  // Create first to get teamId (needed for AAD + payload URL)
+  const created = await prisma.team.create({
+    data: {
+      name,
+      ownerId,
+      configs: configs as any,
+      members: {
+        create: { userId: ownerId, role: TeamRole.OWNER },
+      },
+    },
+    select: { id: true },
+  });
+
+  const teamId = created.id;
+
+  // Slack (optional)
+  if (slackWebhookUrl) {
+    const encSlack = encryptSecret(slackWebhookUrl, aadFor(teamId, "slack"));
+    await prisma.team.update({
+      where: { id: teamId },
+      data: { slackWebhookUrlEnc: encSlack },
+    });
+  }
+
+  // GitHub webhook provisioning (optional)
+  let github: { payloadUrl: string; secret: string } | null = null;
+
+  if (provisionGithub) {
+    const secret = crypto.randomBytes(32).toString("hex");
+    const encGh = encryptSecret(secret, aadFor(teamId, "github"));
+
+    await prisma.team.update({
+      where: { id: teamId },
+      data: { githubWebhookSecretEnc: encGh },
+    });
+
+    const payloadUrl = new URL(
+      `/webhooks/github/${teamId}`,
+      baseUrl,
+    ).toString();
+    github = { payloadUrl, secret };
+  }
+
+  // Return hydrated team (same shape as your other reads)
+  const team = await prisma.team.findFirst({
+    where: { id: teamId, ownerId },
+    include: {
+      members: {
+        include: {
+          user: { select: { id: true, name: true, email: true, image: true } },
+        },
+      },
+      repositories: true,
+    },
+  });
+
+  return { team, github };
 }

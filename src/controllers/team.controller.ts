@@ -5,6 +5,7 @@ import {
   updateTeamSchema,
   updateConfigsSchema,
   updateSlackSchema,
+  onboardTeamSchema,
 } from "../schema/team.schema";
 import Logger from "../utils/logger";
 import {
@@ -15,35 +16,21 @@ import {
   updateTeamConfigs,
   updateTeamMeta,
   getTeamByIdForOwner,
+  onboardTeamForOwner,
 } from "../services/team.service";
-
-function safeTeamResponse(team: any) {
-  if (!team) return null;
-
-  return {
-    id: team.id,
-    name: team.name,
-    ownerId: team.ownerId,
-    configs: team.configs,
-    githubOrgId: team.githubOrgId,
-    githubOrgLogin: team.githubOrgLogin,
-    lastGithubEventAt: team.lastGithubEventAt,
-    lastSlackSentAt: team.lastSlackSentAt,
-    createdAt: team.createdAt,
-    updatedAt: team.updatedAt,
-    repositories: team.repositories ?? [],
-    members: team.members ?? [],
-    secrets: {
-      hasSlackWebhook: Boolean(team.slackWebhookUrlEnc),
-      hasGithubWebhookSecret: Boolean(team.githubWebhookSecretEnc),
-    },
-  };
-}
+import { appConfig } from "../../config/appConfig";
+import { safeTeamResponse } from "../helpers/safeTeamResponse";
 
 export async function getMyTeam(req: Request, res: Response) {
   try {
     const ownerId = req.user!.id;
     const team = await getTeamByOwner(ownerId);
+
+    if (!team) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Team not found" });
+    }
 
     return res.status(200).json({
       success: true,
@@ -71,13 +58,11 @@ export async function createTeam(req: Request, res: Response) {
     });
   } catch (err: any) {
     if (err instanceof z.ZodError) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "Validation error",
-          errors: err.issues,
-        });
+      return res.status(400).json({
+        success: false,
+        message: "Validation error",
+        errors: err.issues,
+      });
     }
 
     // Prisma unique constraint (ownerId unique)
@@ -120,13 +105,11 @@ export async function updateTeam(req: Request, res: Response) {
       .json({ success: true, team: safeTeamResponse(team) });
   } catch (err) {
     if (err instanceof z.ZodError) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "Validation error",
-          errors: err.issues,
-        });
+      return res.status(400).json({
+        success: false,
+        message: "Validation error",
+        errors: err.issues,
+      });
     }
     Logger.error("Error updating team:", err);
     return res
@@ -159,13 +142,11 @@ export async function updateConfigs(req: Request, res: Response) {
       .json({ success: true, team: safeTeamResponse(team) });
   } catch (err) {
     if (err instanceof z.ZodError) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "Validation error",
-          errors: err.issues,
-        });
+      return res.status(400).json({
+        success: false,
+        message: "Validation error",
+        errors: err.issues,
+      });
     }
     Logger.error("Error updating configs:", err);
     return res
@@ -190,7 +171,7 @@ export async function updateSlack(req: Request, res: Response) {
     const team = await setSlackWebhook(
       teamId,
       ownerId,
-      payload.slackWebhookUrl
+      payload.slackWebhookUrl,
     );
     if (!team)
       return res
@@ -202,13 +183,11 @@ export async function updateSlack(req: Request, res: Response) {
       .json({ success: true, team: safeTeamResponse(team) });
   } catch (err) {
     if (err instanceof z.ZodError) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "Validation error",
-          errors: err.issues,
-        });
+      return res.status(400).json({
+        success: false,
+        message: "Validation error",
+        errors: err.issues,
+      });
     }
     Logger.error("Error updating slack webhook:", err);
     return res
@@ -234,7 +213,7 @@ export async function provisionGithub(req: Request, res: Response) {
         .status(404)
         .json({ success: false, message: "Team not found" });
 
-    const baseUrl = process.env.PUBLIC_BASE_URL;
+    const baseUrl = appConfig.app.url;
     if (!baseUrl) {
       return res
         .status(500)
@@ -259,5 +238,69 @@ export async function provisionGithub(req: Request, res: Response) {
     return res
       .status(500)
       .json({ success: false, message: "Failed to provision github webhook" });
+  }
+}
+export async function onboardTeam(req: Request, res: Response) {
+  try {
+    const ownerId = req.user!.id;
+    const payload = onboardTeamSchema.parse(req.body);
+
+    const baseUrl = appConfig.app.url;
+    if (!baseUrl) {
+      return res
+        .status(500)
+        .json({ success: false, message: "Missing PUBLIC_BASE_URL" });
+    }
+
+    const { team, github } = await onboardTeamForOwner({
+      ownerId,
+      name: payload.name,
+      slackWebhookUrl: payload.slackWebhookUrl,
+      configs: payload.configs ?? {},
+      provisionGithub: payload.provisionGithub ?? true,
+      baseUrl,
+    });
+
+    if (!team) {
+      return res
+        .status(500)
+        .json({ success: false, message: "Failed to create team" });
+    }
+
+    return res.status(201).json({
+      success: true,
+      message: "Onboarding complete",
+      team: safeTeamResponse(team),
+      ...(github
+        ? {
+            github: {
+              payloadUrl: github.payloadUrl,
+              webhookSecret: github.secret,
+              note: "Copy this secret now. It will not be shown again.",
+            },
+          }
+        : {}),
+    });
+  } catch (err: any) {
+    if (err instanceof z.ZodError) {
+      return res.status(400).json({
+        success: false,
+        message: "Validation error",
+        errors: err.issues,
+      });
+    }
+
+    if (err?.code === "P2002") {
+      return res.status(409).json({
+        success: false,
+        message: "This user already has a team (one team per owner).",
+      });
+    }
+
+    Logger.error("Error onboarding team:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to complete onboarding",
+    });
   }
 }

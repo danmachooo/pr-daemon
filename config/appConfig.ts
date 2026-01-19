@@ -6,6 +6,7 @@ const STALL_HOURS = 48;
 export const appConfig = {
   app: {
     port: env.PORT,
+    url: env.BASE_URL,
     nodeEnv: env.NODE_ENV,
     msPerDay: MS_PER_DAY,
   },
@@ -26,5 +27,8 @@ export const appConfig = {
       clientId: env.GITHUB_CLIENT_ID,
       clientSecret: env.GITHUB_CLIENT_SECRET,
     },
+  },
+  secrets: {
+    key_hex: env.SECRET_KEYS_HEX,
   },
 } as const;

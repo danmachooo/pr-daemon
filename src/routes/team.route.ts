@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   createTeam,
   getMyTeam,
+  onboardTeam,
   provisionGithub,
   updateConfigs,
   updateSlack,
@@ -12,6 +13,7 @@ import { requireAuth } from "../middlewares/requireAuth";
 const router = Router();
 
 router.use(requireAuth);
+router.post("/onboard", onboardTeam);
 
 router.get("/me", getMyTeam);
 router.post("/", createTeam);
