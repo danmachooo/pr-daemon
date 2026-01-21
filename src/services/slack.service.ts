@@ -43,6 +43,11 @@ export async function sendSlackAlert(
 
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
+      // Logger.info("Slack POST", {
+      //   webhook: options.webhookUrl.slice(0, 40),
+      //   at: Date.now(),
+      // });
+
       await axios.post(
         options.webhookUrl,
         { text: message },

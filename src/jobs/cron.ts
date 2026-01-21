@@ -21,8 +21,8 @@ import { aadFor } from "../helpers/aadFor";
 let isRunning = false;
 
 export async function startCronJobs() {
-  // Runs every 10 seconds
-  cron.schedule("*/10 * * * * *", async () => {
+  // Runs every 30 seconds
+  cron.schedule("*/30 * * * * *", async () => {
     if (isRunning) {
       Logger.warn("Cron: Previous run still in progress, skipping tick");
       return;
@@ -81,12 +81,46 @@ export async function startCronJobs() {
               );
             }
           } else {
-            if (stalePRs.length)
-              await alertOnStalePRs(stalePRs, slackWebhookUrl);
-            if (unreviewedPrs.length)
-              await alertOnUnreviewedPRs(unreviewedPrs, slackWebhookUrl);
-            if (stalledPrs.length)
-              await alertOnStalledPRs(stalledPrs, slackWebhookUrl);
+            const sentStale = await alertOnStalePRs(stalePRs, slackWebhookUrl);
+            const sentUnreviewed = await alertOnUnreviewedPRs(
+              unreviewedPrs,
+              slackWebhookUrl,
+            );
+            const sentStalled = await alertOnStalledPRs(
+              stalledPrs,
+              slackWebhookUrl,
+            );
+
+            if (sentStale > 0) {
+              Logger.info("Cron: Slack alerts dispatched for stale PRs", {
+                teamId,
+                count: sentStale,
+              });
+            }
+            if (sentUnreviewed > 0) {
+              Logger.info("Cron: Slack alerts dispatched for unreviewed PRs", {
+                teamId,
+                count: sentUnreviewed,
+              });
+            }
+            if (sentStalled > 0) {
+              Logger.info("Cron: Slack alerts dispatched for stalled PRs", {
+                teamId,
+                count: sentStalled,
+              });
+            }
+
+            // Optional: Log if rules found issues but no Slack was sent because they were already alerted
+            const totalFound =
+              stalePRs.length + unreviewedPrs.length + stalledPrs.length;
+            const totalSent = sentStale + sentUnreviewed + sentStalled;
+
+            if (totalFound > 0 && totalSent === 0) {
+              Logger.info(
+                "Cron: PR issues exist but Slack notifications were already sent previously",
+                { teamId },
+              );
+            }
           }
 
           // Success: Update Last Rule Run

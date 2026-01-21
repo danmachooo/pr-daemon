@@ -20,7 +20,7 @@ export async function closePullRequest(data: ClosePullRequestInput) {
   const { repoId, prNumber, closedAt } = data;
   if (data.repoId === undefined || data.prNumber === undefined) {
     throw new Error(
-      "repoId and prNumber are required to close a Pull Request."
+      "repoId and prNumber are required to close a Pull Request.",
     );
   }
 
@@ -110,7 +110,7 @@ export async function incrementReviewCount(data: PullRequestIdentifier) {
 
 export async function recordReviewSubmission(
   data: PullRequestIdentifier,
-  reviewData: { id: number; login: string; state: string }
+  reviewData: { id: number; login: string; state: string },
 ) {
   const { repoId, prNumber } = data;
 
@@ -123,7 +123,7 @@ export async function recordReviewSubmission(
     (pr?.completedReviewers as unknown as RequestedReviewer[]) || [];
 
   const alreadyRecorded = history.some(
-    (r) => r.id === reviewData.id && r.state === reviewData.state
+    (r) => r.id === reviewData.id && r.state === reviewData.state,
   );
 
   if (alreadyRecorded) {
@@ -157,5 +157,12 @@ export async function markStaleAlert(id: number) {
   await prisma.pullRequest.update({
     where: { id },
     data: { staleAlertAt: new Date() },
+  });
+}
+
+export async function markStalledAlert(id: number) {
+  await prisma.pullRequest.update({
+    where: { id },
+    data: { stalledAlertAt: new Date() },
   });
 }
