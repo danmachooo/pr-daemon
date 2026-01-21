@@ -17,6 +17,8 @@ import {
   onboardTeamForOwner,
 } from "../services/team.service";
 
+import { getTeamIntegrationStatus } from "../services/system.service";
+
 import { safeTeamResponse } from "../helpers/safeTeamResponse";
 import { NotFoundError } from "../errors";
 import { asyncHandler } from "../middlewares";
@@ -133,7 +135,7 @@ export const createTeamGithubWebhook = asyncHandler(
     const team = await getTeamByIdForOwner(teamId, ownerId);
     if (!team) throw new NotFoundError("Team not found");
 
-    const baseUrl = getBaseUrl(http);
+    const baseUrl = getBaseUrl();
     if (!baseUrl) return;
 
     const result = await provisionGithubWebhook(teamId, ownerId, baseUrl);
@@ -155,7 +157,7 @@ export const onboardTeam = asyncHandler(async (http: HttpContext) => {
   const ownerId = http.req.user!.id;
   const payload = onboardTeamSchema.parse(http.req.body);
 
-  const baseUrl = getBaseUrl(http);
+  const baseUrl = getBaseUrl();
   if (!baseUrl) return;
 
   const { team, github } = await onboardTeamForOwner({
@@ -187,4 +189,10 @@ export const onboardTeam = asyncHandler(async (http: HttpContext) => {
       },
     }),
   });
+});
+export const getSystemHealthStatus = asyncHandler(async (http: HttpContext) => {
+  const teamId = getValidTeamId(http);
+
+  const { lastGithubEventAt, lastSlackSentAt } =
+    await getTeamIntegrationStatus(teamId);
 });

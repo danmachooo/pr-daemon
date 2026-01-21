@@ -2,13 +2,16 @@ import { appConfig } from "../../config/appConfig";
 import { PRStatus } from "../generated/prisma/enums";
 import { prisma } from "../lib/prisma";
 
-export async function findStalledPrs() {
+export async function findStalledPrs(teamId: number) {
   const thresholdDate = new Date(
-    Date.now() - appConfig.thresholds.stallHours * 60 * 60 * 1000
+    Date.now() - appConfig.thresholds.stallHours * 60 * 60 * 1000,
   );
 
   return await prisma.pullRequest.findMany({
     where: {
+      repository: {
+        teamId,
+      },
       status: PRStatus.OPEN,
       stalledAlertAt: null, // Don't alert if we already did
 

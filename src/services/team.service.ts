@@ -2,10 +2,7 @@ import crypto from "crypto";
 import { prisma } from "../lib/prisma";
 import { TeamRole } from "../generated/prisma/enums";
 import { encryptSecret } from "./secrets.service";
-
-function aadFor(teamId: number, field: "slack" | "github") {
-  return `team:${teamId}:secret:${field}`;
-}
+import { aadFor } from "../helpers/aadFor";
 
 export async function getTeamByOwner(ownerId: string) {
   return prisma.team.findUnique({

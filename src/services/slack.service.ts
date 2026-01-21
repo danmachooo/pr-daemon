@@ -1,11 +1,11 @@
 import axios, { AxiosError } from "axios";
-import { appConfig } from "../../config/appConfig";
 import Logger from "../utils/logger";
 
 interface SlackAlertOptions {
   maxRetries?: number;
   retryDelay?: number;
   timeout?: number;
+  webhookUrl: string;
 }
 
 interface SlackAlertResult {
@@ -16,7 +16,7 @@ interface SlackAlertResult {
 
 export async function sendSlackAlert(
   message: string,
-  options: SlackAlertOptions = {}
+  options: SlackAlertOptions,
 ): Promise<SlackAlertResult> {
   const { maxRetries = 3, retryDelay = 1000, timeout = 5000 } = options;
 
@@ -30,7 +30,7 @@ export async function sendSlackAlert(
     };
   }
 
-  if (!appConfig.integrations.slackWebhookUrl) {
+  if (!options.webhookUrl) {
     Logger.error("Slack alert failed: Webhook URL not configured");
     return {
       success: false,
@@ -44,14 +44,14 @@ export async function sendSlackAlert(
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       await axios.post(
-        appConfig.integrations.slackWebhookUrl,
+        options.webhookUrl,
         { text: message },
         {
           timeout,
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       // Success
@@ -90,7 +90,7 @@ export async function sendSlackAlert(
       } else {
         Logger.error(
           `Slack alert attempt ${attempt}/${maxRetries} failed:`,
-          error
+          error,
         );
       }
 
@@ -107,7 +107,7 @@ export async function sendSlackAlert(
     lastError instanceof Error ? lastError.message : "Unknown error";
 
   Logger.error(
-    `Slack alert failed after ${maxRetries} attempts: ${errorMessage}`
+    `Slack alert failed after ${maxRetries} attempts: ${errorMessage}`,
   );
 
   return {
@@ -115,14 +115,4 @@ export async function sendSlackAlert(
     error: errorMessage,
     attempts: maxRetries,
   };
-}
-
-// Optional: Fire-and-forget version that doesn't throw
-export function sendSlackAlertAsync(
-  message: string,
-  options?: SlackAlertOptions
-): void {
-  sendSlackAlert(message, options).catch((error) => {
-    Logger.error("Unhandled error in sendSlackAlertAsync:", error);
-  });
 }

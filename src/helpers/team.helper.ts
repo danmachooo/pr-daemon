@@ -1,31 +1,23 @@
 import { appConfig } from "../../config/appConfig";
 import { HttpContext } from "../controllers/team.types";
+import { AppError, ValidationError } from "../errors";
 
 // Helper to validate teamId parameter
-export function getValidTeamId(http: HttpContext): number | null {
+export function getValidTeamId(http: HttpContext): number {
   const teamId = Number(http.req.params.teamId);
 
   if (!Number.isFinite(teamId)) {
-    http.res.status(400).json({
-      success: false,
-      message: "Invalid teamId",
-    });
-    return null;
+    throw new ValidationError("Invalid teamID");
   }
 
   return teamId;
 }
 
-// Helper to validate baseUrl configuration
-export function getBaseUrl(http: HttpContext): string | null {
+export function getBaseUrl(): string {
   const baseUrl = appConfig.app.url;
 
   if (!baseUrl) {
-    http.res.status(500).json({
-      success: false,
-      message: "Missing PUBLIC_BASE_URL configuration",
-    });
-    return null;
+    throw new AppError(500, "PUBLIC_BASE_URL is not configured");
   }
 
   return baseUrl;

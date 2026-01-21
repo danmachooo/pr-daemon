@@ -1050,6 +1050,8 @@ export const TeamScalarFieldEnum = {
   configs: 'configs',
   lastGithubEventAt: 'lastGithubEventAt',
   lastSlackSentAt: 'lastSlackSentAt',
+  lastRuleRunAt: 'lastRuleRunAt',
+  lastRuleErrorAt: 'lastRuleErrorAt',
   ownerId: 'ownerId',
   githubOrgId: 'githubOrgId',
   githubOrgLogin: 'githubOrgLogin',

@@ -43,6 +43,8 @@ export type TeamMinAggregateOutputType = {
   githubWebhookSecretEnc: string | null
   lastGithubEventAt: Date | null
   lastSlackSentAt: Date | null
+  lastRuleRunAt: Date | null
+  lastRuleErrorAt: Date | null
   ownerId: string | null
   githubOrgId: number | null
   githubOrgLogin: string | null
@@ -57,6 +59,8 @@ export type TeamMaxAggregateOutputType = {
   githubWebhookSecretEnc: string | null
   lastGithubEventAt: Date | null
   lastSlackSentAt: Date | null
+  lastRuleRunAt: Date | null
+  lastRuleErrorAt: Date | null
   ownerId: string | null
   githubOrgId: number | null
   githubOrgLogin: string | null
@@ -72,6 +76,8 @@ export type TeamCountAggregateOutputType = {
   configs: number
   lastGithubEventAt: number
   lastSlackSentAt: number
+  lastRuleRunAt: number
+  lastRuleErrorAt: number
   ownerId: number
   githubOrgId: number
   githubOrgLogin: number
@@ -98,6 +104,8 @@ export type TeamMinAggregateInputType = {
   githubWebhookSecretEnc?: true
   lastGithubEventAt?: true
   lastSlackSentAt?: true
+  lastRuleRunAt?: true
+  lastRuleErrorAt?: true
   ownerId?: true
   githubOrgId?: true
   githubOrgLogin?: true
@@ -112,6 +120,8 @@ export type TeamMaxAggregateInputType = {
   githubWebhookSecretEnc?: true
   lastGithubEventAt?: true
   lastSlackSentAt?: true
+  lastRuleRunAt?: true
+  lastRuleErrorAt?: true
   ownerId?: true
   githubOrgId?: true
   githubOrgLogin?: true
@@ -127,6 +137,8 @@ export type TeamCountAggregateInputType = {
   configs?: true
   lastGithubEventAt?: true
   lastSlackSentAt?: true
+  lastRuleRunAt?: true
+  lastRuleErrorAt?: true
   ownerId?: true
   githubOrgId?: true
   githubOrgLogin?: true
@@ -229,6 +241,8 @@ export type TeamGroupByOutputType = {
   configs: runtime.JsonValue
   lastGithubEventAt: Date | null
   lastSlackSentAt: Date | null
+  lastRuleRunAt: Date | null
+  lastRuleErrorAt: Date | null
   ownerId: string
   githubOrgId: number | null
   githubOrgLogin: string | null
@@ -267,6 +281,8 @@ export type TeamWhereInput = {
   configs?: Prisma.JsonFilter<"Team">
   lastGithubEventAt?: Prisma.DateTimeNullableFilter<"Team"> | Date | string | null
   lastSlackSentAt?: Prisma.DateTimeNullableFilter<"Team"> | Date | string | null
+  lastRuleRunAt?: Prisma.DateTimeNullableFilter<"Team"> | Date | string | null
+  lastRuleErrorAt?: Prisma.DateTimeNullableFilter<"Team"> | Date | string | null
   ownerId?: Prisma.StringFilter<"Team"> | string
   githubOrgId?: Prisma.IntNullableFilter<"Team"> | number | null
   githubOrgLogin?: Prisma.StringNullableFilter<"Team"> | string | null
@@ -285,6 +301,8 @@ export type TeamOrderByWithRelationInput = {
   configs?: Prisma.SortOrder
   lastGithubEventAt?: Prisma.SortOrderInput | Prisma.SortOrder
   lastSlackSentAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastRuleRunAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastRuleErrorAt?: Prisma.SortOrderInput | Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   githubOrgId?: Prisma.SortOrderInput | Prisma.SortOrder
   githubOrgLogin?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -307,6 +325,8 @@ export type TeamWhereUniqueInput = Prisma.AtLeast<{
   configs?: Prisma.JsonFilter<"Team">
   lastGithubEventAt?: Prisma.DateTimeNullableFilter<"Team"> | Date | string | null
   lastSlackSentAt?: Prisma.DateTimeNullableFilter<"Team"> | Date | string | null
+  lastRuleRunAt?: Prisma.DateTimeNullableFilter<"Team"> | Date | string | null
+  lastRuleErrorAt?: Prisma.DateTimeNullableFilter<"Team"> | Date | string | null
   githubOrgId?: Prisma.IntNullableFilter<"Team"> | number | null
   githubOrgLogin?: Prisma.StringNullableFilter<"Team"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Team"> | Date | string
@@ -324,6 +344,8 @@ export type TeamOrderByWithAggregationInput = {
   configs?: Prisma.SortOrder
   lastGithubEventAt?: Prisma.SortOrderInput | Prisma.SortOrder
   lastSlackSentAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastRuleRunAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastRuleErrorAt?: Prisma.SortOrderInput | Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   githubOrgId?: Prisma.SortOrderInput | Prisma.SortOrder
   githubOrgLogin?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -347,6 +369,8 @@ export type TeamScalarWhereWithAggregatesInput = {
   configs?: Prisma.JsonWithAggregatesFilter<"Team">
   lastGithubEventAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Team"> | Date | string | null
   lastSlackSentAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Team"> | Date | string | null
+  lastRuleRunAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Team"> | Date | string | null
+  lastRuleErrorAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Team"> | Date | string | null
   ownerId?: Prisma.StringWithAggregatesFilter<"Team"> | string
   githubOrgId?: Prisma.IntNullableWithAggregatesFilter<"Team"> | number | null
   githubOrgLogin?: Prisma.StringNullableWithAggregatesFilter<"Team"> | string | null
@@ -361,6 +385,8 @@ export type TeamCreateInput = {
   configs?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lastGithubEventAt?: Date | string | null
   lastSlackSentAt?: Date | string | null
+  lastRuleRunAt?: Date | string | null
+  lastRuleErrorAt?: Date | string | null
   githubOrgId?: number | null
   githubOrgLogin?: string | null
   createdAt?: Date | string
@@ -378,6 +404,8 @@ export type TeamUncheckedCreateInput = {
   configs?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lastGithubEventAt?: Date | string | null
   lastSlackSentAt?: Date | string | null
+  lastRuleRunAt?: Date | string | null
+  lastRuleErrorAt?: Date | string | null
   ownerId: string
   githubOrgId?: number | null
   githubOrgLogin?: string | null
@@ -394,6 +422,8 @@ export type TeamUpdateInput = {
   configs?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lastGithubEventAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSlackSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastRuleRunAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastRuleErrorAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   githubOrgId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   githubOrgLogin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -411,6 +441,8 @@ export type TeamUncheckedUpdateInput = {
   configs?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lastGithubEventAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSlackSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastRuleRunAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastRuleErrorAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   githubOrgId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   githubOrgLogin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -428,6 +460,8 @@ export type TeamCreateManyInput = {
   configs?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lastGithubEventAt?: Date | string | null
   lastSlackSentAt?: Date | string | null
+  lastRuleRunAt?: Date | string | null
+  lastRuleErrorAt?: Date | string | null
   ownerId: string
   githubOrgId?: number | null
   githubOrgLogin?: string | null
@@ -442,6 +476,8 @@ export type TeamUpdateManyMutationInput = {
   configs?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lastGithubEventAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSlackSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastRuleRunAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastRuleErrorAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   githubOrgId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   githubOrgLogin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -456,6 +492,8 @@ export type TeamUncheckedUpdateManyInput = {
   configs?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lastGithubEventAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSlackSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastRuleRunAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastRuleErrorAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   githubOrgId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   githubOrgLogin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -471,6 +509,8 @@ export type TeamCountOrderByAggregateInput = {
   configs?: Prisma.SortOrder
   lastGithubEventAt?: Prisma.SortOrder
   lastSlackSentAt?: Prisma.SortOrder
+  lastRuleRunAt?: Prisma.SortOrder
+  lastRuleErrorAt?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   githubOrgId?: Prisma.SortOrder
   githubOrgLogin?: Prisma.SortOrder
@@ -490,6 +530,8 @@ export type TeamMaxOrderByAggregateInput = {
   githubWebhookSecretEnc?: Prisma.SortOrder
   lastGithubEventAt?: Prisma.SortOrder
   lastSlackSentAt?: Prisma.SortOrder
+  lastRuleRunAt?: Prisma.SortOrder
+  lastRuleErrorAt?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   githubOrgId?: Prisma.SortOrder
   githubOrgLogin?: Prisma.SortOrder
@@ -504,6 +546,8 @@ export type TeamMinOrderByAggregateInput = {
   githubWebhookSecretEnc?: Prisma.SortOrder
   lastGithubEventAt?: Prisma.SortOrder
   lastSlackSentAt?: Prisma.SortOrder
+  lastRuleRunAt?: Prisma.SortOrder
+  lastRuleErrorAt?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   githubOrgId?: Prisma.SortOrder
   githubOrgLogin?: Prisma.SortOrder
@@ -640,6 +684,8 @@ export type TeamCreateWithoutMembersInput = {
   configs?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lastGithubEventAt?: Date | string | null
   lastSlackSentAt?: Date | string | null
+  lastRuleRunAt?: Date | string | null
+  lastRuleErrorAt?: Date | string | null
   githubOrgId?: number | null
   githubOrgLogin?: string | null
   createdAt?: Date | string
@@ -656,6 +702,8 @@ export type TeamUncheckedCreateWithoutMembersInput = {
   configs?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lastGithubEventAt?: Date | string | null
   lastSlackSentAt?: Date | string | null
+  lastRuleRunAt?: Date | string | null
+  lastRuleErrorAt?: Date | string | null
   ownerId: string
   githubOrgId?: number | null
   githubOrgLogin?: string | null
@@ -687,6 +735,8 @@ export type TeamUpdateWithoutMembersInput = {
   configs?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lastGithubEventAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSlackSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastRuleRunAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastRuleErrorAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   githubOrgId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   githubOrgLogin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -703,6 +753,8 @@ export type TeamUncheckedUpdateWithoutMembersInput = {
   configs?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lastGithubEventAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSlackSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastRuleRunAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastRuleErrorAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   githubOrgId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   githubOrgLogin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -718,6 +770,8 @@ export type TeamCreateWithoutRepositoriesInput = {
   configs?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lastGithubEventAt?: Date | string | null
   lastSlackSentAt?: Date | string | null
+  lastRuleRunAt?: Date | string | null
+  lastRuleErrorAt?: Date | string | null
   githubOrgId?: number | null
   githubOrgLogin?: string | null
   createdAt?: Date | string
@@ -734,6 +788,8 @@ export type TeamUncheckedCreateWithoutRepositoriesInput = {
   configs?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lastGithubEventAt?: Date | string | null
   lastSlackSentAt?: Date | string | null
+  lastRuleRunAt?: Date | string | null
+  lastRuleErrorAt?: Date | string | null
   ownerId: string
   githubOrgId?: number | null
   githubOrgLogin?: string | null
@@ -765,6 +821,8 @@ export type TeamUpdateWithoutRepositoriesInput = {
   configs?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lastGithubEventAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSlackSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastRuleRunAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastRuleErrorAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   githubOrgId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   githubOrgLogin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -781,6 +839,8 @@ export type TeamUncheckedUpdateWithoutRepositoriesInput = {
   configs?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lastGithubEventAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSlackSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastRuleRunAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastRuleErrorAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   githubOrgId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   githubOrgLogin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -796,6 +856,8 @@ export type TeamCreateWithoutOwnerInput = {
   configs?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lastGithubEventAt?: Date | string | null
   lastSlackSentAt?: Date | string | null
+  lastRuleRunAt?: Date | string | null
+  lastRuleErrorAt?: Date | string | null
   githubOrgId?: number | null
   githubOrgLogin?: string | null
   createdAt?: Date | string
@@ -812,6 +874,8 @@ export type TeamUncheckedCreateWithoutOwnerInput = {
   configs?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lastGithubEventAt?: Date | string | null
   lastSlackSentAt?: Date | string | null
+  lastRuleRunAt?: Date | string | null
+  lastRuleErrorAt?: Date | string | null
   githubOrgId?: number | null
   githubOrgLogin?: string | null
   createdAt?: Date | string
@@ -857,6 +921,8 @@ export type TeamScalarWhereInput = {
   configs?: Prisma.JsonFilter<"Team">
   lastGithubEventAt?: Prisma.DateTimeNullableFilter<"Team"> | Date | string | null
   lastSlackSentAt?: Prisma.DateTimeNullableFilter<"Team"> | Date | string | null
+  lastRuleRunAt?: Prisma.DateTimeNullableFilter<"Team"> | Date | string | null
+  lastRuleErrorAt?: Prisma.DateTimeNullableFilter<"Team"> | Date | string | null
   ownerId?: Prisma.StringFilter<"Team"> | string
   githubOrgId?: Prisma.IntNullableFilter<"Team"> | number | null
   githubOrgLogin?: Prisma.StringNullableFilter<"Team"> | string | null
@@ -872,6 +938,8 @@ export type TeamCreateManyOwnerInput = {
   configs?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lastGithubEventAt?: Date | string | null
   lastSlackSentAt?: Date | string | null
+  lastRuleRunAt?: Date | string | null
+  lastRuleErrorAt?: Date | string | null
   githubOrgId?: number | null
   githubOrgLogin?: string | null
   createdAt?: Date | string
@@ -885,6 +953,8 @@ export type TeamUpdateWithoutOwnerInput = {
   configs?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lastGithubEventAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSlackSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastRuleRunAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastRuleErrorAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   githubOrgId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   githubOrgLogin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -901,6 +971,8 @@ export type TeamUncheckedUpdateWithoutOwnerInput = {
   configs?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lastGithubEventAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSlackSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastRuleRunAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastRuleErrorAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   githubOrgId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   githubOrgLogin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -917,6 +989,8 @@ export type TeamUncheckedUpdateManyWithoutOwnerInput = {
   configs?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lastGithubEventAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSlackSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastRuleRunAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastRuleErrorAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   githubOrgId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   githubOrgLogin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -971,6 +1045,8 @@ export type TeamSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   configs?: boolean
   lastGithubEventAt?: boolean
   lastSlackSentAt?: boolean
+  lastRuleRunAt?: boolean
+  lastRuleErrorAt?: boolean
   ownerId?: boolean
   githubOrgId?: boolean
   githubOrgLogin?: boolean
@@ -990,6 +1066,8 @@ export type TeamSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   configs?: boolean
   lastGithubEventAt?: boolean
   lastSlackSentAt?: boolean
+  lastRuleRunAt?: boolean
+  lastRuleErrorAt?: boolean
   ownerId?: boolean
   githubOrgId?: boolean
   githubOrgLogin?: boolean
@@ -1006,6 +1084,8 @@ export type TeamSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   configs?: boolean
   lastGithubEventAt?: boolean
   lastSlackSentAt?: boolean
+  lastRuleRunAt?: boolean
+  lastRuleErrorAt?: boolean
   ownerId?: boolean
   githubOrgId?: boolean
   githubOrgLogin?: boolean
@@ -1022,6 +1102,8 @@ export type TeamSelectScalar = {
   configs?: boolean
   lastGithubEventAt?: boolean
   lastSlackSentAt?: boolean
+  lastRuleRunAt?: boolean
+  lastRuleErrorAt?: boolean
   ownerId?: boolean
   githubOrgId?: boolean
   githubOrgLogin?: boolean
@@ -1029,7 +1111,7 @@ export type TeamSelectScalar = {
   updatedAt?: boolean
 }
 
-export type TeamOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slackWebhookUrlEnc" | "githubWebhookSecretEnc" | "configs" | "lastGithubEventAt" | "lastSlackSentAt" | "ownerId" | "githubOrgId" | "githubOrgLogin" | "createdAt" | "updatedAt", ExtArgs["result"]["team"]>
+export type TeamOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slackWebhookUrlEnc" | "githubWebhookSecretEnc" | "configs" | "lastGithubEventAt" | "lastSlackSentAt" | "lastRuleRunAt" | "lastRuleErrorAt" | "ownerId" | "githubOrgId" | "githubOrgLogin" | "createdAt" | "updatedAt", ExtArgs["result"]["team"]>
 export type TeamInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   members?: boolean | Prisma.Team$membersArgs<ExtArgs>
@@ -1058,6 +1140,8 @@ export type $TeamPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     configs: runtime.JsonValue
     lastGithubEventAt: Date | null
     lastSlackSentAt: Date | null
+    lastRuleRunAt: Date | null
+    lastRuleErrorAt: Date | null
     ownerId: string
     githubOrgId: number | null
     githubOrgLogin: string | null
@@ -1496,6 +1580,8 @@ export interface TeamFieldRefs {
   readonly configs: Prisma.FieldRef<"Team", 'Json'>
   readonly lastGithubEventAt: Prisma.FieldRef<"Team", 'DateTime'>
   readonly lastSlackSentAt: Prisma.FieldRef<"Team", 'DateTime'>
+  readonly lastRuleRunAt: Prisma.FieldRef<"Team", 'DateTime'>
+  readonly lastRuleErrorAt: Prisma.FieldRef<"Team", 'DateTime'>
   readonly ownerId: Prisma.FieldRef<"Team", 'String'>
   readonly githubOrgId: Prisma.FieldRef<"Team", 'Int'>
   readonly githubOrgLogin: Prisma.FieldRef<"Team", 'String'>

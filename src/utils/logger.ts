@@ -23,9 +23,17 @@ winston.addColors(colors);
 const format = winston.format.combine(
   winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss:ms" }),
   winston.format.colorize({ all: true }),
-  winston.format.printf(
-    (info) => `${info.timestamp} ${info.level}: ${info.message}`
-  )
+  winston.format.printf((info) => {
+    // Extract metadata (everything except message, level, and timestamp)
+    const { timestamp, level, message, ...metadata } = info;
+
+    // Check if metadata exists and isn't empty
+    const metaString = Object.keys(metadata).length
+      ? `\n${JSON.stringify(metadata, null, 2)}`
+      : "";
+
+    return `${timestamp} ${level}: ${message}${metaString}`;
+  }),
 );
 
 const transports = [

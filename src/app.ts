@@ -7,7 +7,7 @@ import { errorHandler, notFoundHandler } from "./middlewares";
 
 const app = express();
 
-// Apply CORS BEFORE auth routes
+// 1) CORS first
 app.use(
   cors({
     origin: "http://localhost:8080",
@@ -16,16 +16,19 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
-app.use(notFoundHandler);
 
-// Global error handler (must be last)
-app.use(errorHandler);
-
-// Auth handler must come after CORS
-app.use("/api/auth/", toNodeHandler(auth));
-
+// 2) Body parsers before routes
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// 3) Routes
+app.use("/api/auth", toNodeHandler(auth));
 app.use("/api", routes);
+
+// 4) 404 handler AFTER routes
+app.use(notFoundHandler);
+
+// 5) Error handler LAST
+app.use(errorHandler);
 
 export default app;

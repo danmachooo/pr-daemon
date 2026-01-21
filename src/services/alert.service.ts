@@ -10,7 +10,10 @@ import {
   formatOpenedDate,
 } from "../helpers/alert.helper";
 
-export async function alertOnStalePRs(stalePrs: PullRequestWithRepo[]) {
+export async function alertOnStalePRs(
+  stalePrs: PullRequestWithRepo[],
+  slackWebhookUrl: string,
+) {
   for (const pr of stalePrs) {
     // If we've already alerted, skip
     if (pr.staleAlertAt) continue;
@@ -21,12 +24,15 @@ export async function alertOnStalePRs(stalePrs: PullRequestWithRepo[]) {
       `> *Repo:* ${pr.repository.name}\n` +
       `> *Opened:* ${formatOpenedDate(pr.openedAt)}`;
 
-    await sendSlackAlert(message);
+    await sendSlackAlert(message, { webhookUrl: slackWebhookUrl });
     await markStaleAlert(pr.id);
   }
 }
 
-export async function alertOnUnreviewedPRs(prs: PullRequestWithRepo[]) {
+export async function alertOnUnreviewedPRs(
+  prs: PullRequestWithRepo[],
+  slackWebhookUrl: string,
+) {
   for (const pr of prs) {
     // Only alert if we haven't already
     if (pr.unreviewedAlertAt) continue;
@@ -41,12 +47,15 @@ export async function alertOnUnreviewedPRs(prs: PullRequestWithRepo[]) {
       `> *Current Reviewers:* ${reviewerNames}\n` +
       `> *Status:* Awaiting first review`;
 
-    await sendSlackAlert(message);
+    await sendSlackAlert(message, { webhookUrl: slackWebhookUrl });
     await markUnreviewedAlert(pr.id);
   }
 }
 
-export async function alertOnStalledPRs(prs: PullRequestWithRepo[]) {
+export async function alertOnStalledPRs(
+  prs: PullRequestWithRepo[],
+  slackWebhookUrl: string,
+) {
   for (const pr of prs) {
     if (pr.stalledAlertAt) continue;
 
@@ -64,7 +73,7 @@ export async function alertOnStalledPRs(prs: PullRequestWithRepo[]) {
       `> *Pending Reviewers:* ${pendingNames}\n` +
       `> *Action:* Please check if a follow-up is needed.`;
 
-    await sendSlackAlert(message);
+    await sendSlackAlert(message, { webhookUrl: slackWebhookUrl });
     await markStaleAlert(pr.id);
   }
 }
