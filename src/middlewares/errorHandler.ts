@@ -3,6 +3,7 @@ import { z } from "zod";
 import Logger from "../utils/logger";
 import { AppError } from "../errors";
 import { Prisma } from "../generated/prisma/client";
+import { appConfig } from "../../config/appConfig";
 
 interface ErrorResponse {
   success: false;
@@ -11,7 +12,7 @@ interface ErrorResponse {
   stack?: string;
 }
 
-const isDevelopment = process.env.NODE_ENV === "development";
+const isDevelopment = appConfig.app.nodeEnv === "development";
 
 /**
  * Global error handler middleware
