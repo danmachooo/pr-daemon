@@ -17,7 +17,10 @@ import {
   onboardTeamForOwner,
 } from "../services/team.service";
 
-import { getTeamIntegrationStatus } from "../services/system.service";
+import {
+  getDaemonStatus,
+  getTeamIntegrationStatus,
+} from "../services/system.service";
 
 import { safeTeamResponse } from "../helpers/safeTeamResponse";
 import { NotFoundError } from "../errors";
@@ -25,6 +28,11 @@ import { asyncHandler } from "../middlewares";
 
 import type { HttpContext } from "./team.types";
 import { getBaseUrl, getValidTeamId } from "../helpers/team.helper";
+import { success } from "zod";
+import { http } from "winston";
+import { findStalePullRequests } from "../rules/stalePr.rule";
+import { findStalledPrs } from "../rules/stalledPr.rule";
+import { findUnreviewedPullRequests } from "../rules/unreviewedPr.rule";
 
 /**
  * Get the authenticated user's team
@@ -190,9 +198,68 @@ export const onboardTeam = asyncHandler(async (http: HttpContext) => {
     }),
   });
 });
-export const getSystemHealthStatus = asyncHandler(async (http: HttpContext) => {
-  const teamId = getValidTeamId(http);
 
-  const { lastGithubEventAt, lastSlackSentAt } =
-    await getTeamIntegrationStatus(teamId);
+export const getSystemStatus = asyncHandler(async (http: HttpContext) => {
+  const ownerId = http.req.user!.id;
+
+  const team = await getTeamByOwner(ownerId);
+  if (!team) throw new NotFoundError("Team not found");
+
+  const teamId = team.id;
+  const {
+    lastGithubEventAt,
+    lastSlackSentAt,
+    slackWebhookUrlEnc,
+    githubWebhookSecretEnc,
+  } = await getTeamIntegrationStatus(teamId);
+  const { lastRuleRunAt, lastRuleErrorAt } = await getDaemonStatus(teamId);
+
+  const githubConnected = githubWebhookSecretEnc !== null;
+
+  return http.res.status(200).json({
+    success: true,
+    integrations: {
+      github: {
+        connected: githubConnected,
+        lastEventAt: lastGithubEventAt,
+      },
+      slack: {
+        configured: Boolean(slackWebhookUrlEnc),
+        lastAlertSentAt: lastSlackSentAt,
+      },
+    },
+    daemon: {
+      lastRunAt: lastRuleRunAt,
+      lastErrorAt: lastRuleErrorAt,
+    },
+  });
+});
+
+export const getPRStatus = asyncHandler(async (http: HttpContext) => {
+  const ownerId = http.req.user!.id;
+
+  const team = await getTeamByOwner(ownerId);
+  if (!team) throw new NotFoundError("Team not found");
+
+  const teamId = team.id;
+
+  // Parse query params
+  const sortOrder = (http.req.query.sort as "latest" | "oldest") || "latest";
+  const limit = http.req.query.limit
+    ? parseInt(http.req.query.limit as string)
+    : 1;
+
+  const [stalePRs, unreviewedPrs, stalledPrs] = await Promise.all([
+    findStalePullRequests(teamId, { sortOrder, limit }),
+    findUnreviewedPullRequests(teamId, { sortOrder, limit }),
+    findStalledPrs(teamId, { sortOrder, limit }),
+  ]);
+
+  http.res.status(200).json({
+    success: true,
+    stale: stalePRs,
+    unreviewed: unreviewedPrs,
+    stalled: stalledPrs,
+    timestamp: new Date().toISOString(),
+  });
 });

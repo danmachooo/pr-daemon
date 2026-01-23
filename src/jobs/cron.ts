@@ -15,7 +15,10 @@ import {
   alertOnStalledPRs,
   alertOnUnreviewedPRs,
 } from "../services/alert.service";
-import { getTeamsWithWebhook } from "../services/team.service";
+import {
+  getTeamsWithWebhook,
+  updateLastSlackSent,
+} from "../services/team.service";
 
 let isRunning = false;
 
@@ -86,6 +89,8 @@ export async function startCronJobs() {
           );
 
           const totalSent = sentStale + sentUnreviewed + sentStalled;
+
+          await updateLastSlackSent(teamId);
 
           if (sentStale > 0) {
             Logger.info("Cron: Slack alerts dispatched for stale PRs", {

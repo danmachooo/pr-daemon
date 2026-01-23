@@ -2,7 +2,19 @@ import { appConfig } from "../../config/appConfig";
 import { PRStatus } from "../generated/prisma/enums";
 import { prisma } from "../lib/prisma";
 
-export async function findStalledPrs(teamId: number) {
+type SortOrder = "latest" | "oldest" | "all";
+
+interface FindStalledPrsOptions {
+  sortOrder?: SortOrder;
+  limit?: number;
+}
+
+export async function findStalledPrs(
+  teamId: number,
+  options: FindStalledPrsOptions = {},
+) {
+  const { sortOrder = "all", limit } = options;
+
   const thresholdDate = new Date(
     Date.now() - appConfig.thresholds.stallHours * 60 * 60 * 1000,
   );
@@ -35,5 +47,12 @@ export async function findStalledPrs(teamId: number) {
       ],
     },
     include: { repository: true },
+    ...(sortOrder !== "all" && {
+      orderBy: {
+        // Sort by last activity (most recent between commit and review)
+        lastCommitAt: sortOrder === "latest" ? "desc" : "asc",
+      },
+    }),
+    ...(limit && sortOrder !== "all" && { take: limit }),
   });
 }

@@ -1,3 +1,4 @@
+import { Logform } from "winston";
 import { appConfig } from "../../config/appConfig";
 import { HttpContext } from "../controllers/team.types";
 import { AppError, ValidationError } from "../errors";
@@ -26,9 +27,10 @@ import { AppError, ValidationError } from "../errors";
  */
 export function getValidTeamId(http: HttpContext): number {
   const teamId = Number(http.req.params.teamId);
+  console.log(teamId);
 
   if (!Number.isFinite(teamId)) {
-    throw new ValidationError("Invalid teamID");
+    throw new ValidationError("Invalid teamId");
   }
 
   return teamId;

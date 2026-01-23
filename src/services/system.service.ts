@@ -3,7 +3,10 @@ import type { Team } from "../generated/prisma/client";
 
 export type TeamIntegrationStatus = Pick<
   Team,
-  "lastGithubEventAt" | "lastSlackSentAt"
+  | "lastGithubEventAt"
+  | "githubWebhookSecretEnc"
+  | "lastSlackSentAt"
+  | "slackWebhookUrlEnc"
 >;
 
 export type DaemonStatus = Pick<Team, "lastRuleRunAt" | "lastRuleErrorAt">;
@@ -82,6 +85,8 @@ export async function getTeamIntegrationStatus(
   return prisma.team.findUniqueOrThrow({
     where: { id: teamId },
     select: {
+      githubWebhookSecretEnc: true,
+      slackWebhookUrlEnc: true,
       lastGithubEventAt: true,
       lastSlackSentAt: true,
     },

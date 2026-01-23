@@ -6,6 +6,7 @@ import {
 } from "./handlers/pullRequest.handler";
 import { resolveTeamFromRepoId } from "./resolveTeam";
 import { verifyGithubWebhookSignature } from "./verifyGithub";
+import { updateLastGithubEvent } from "../services/team.service";
 
 export const githubWebhookHandler = async (req: Request, res: Response) => {
   try {
@@ -41,6 +42,7 @@ export const githubWebhookHandler = async (req: Request, res: Response) => {
       default:
         return res.status(200).json({ ignored: true });
     }
+    await updateLastGithubEvent(team.id);
 
     return res.status(200).json({ ok: true });
   } catch (err) {

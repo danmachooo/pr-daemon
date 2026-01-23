@@ -15,8 +15,7 @@ import {
   sendQueued,
 } from "../helpers/alert.helper";
 import { appConfig } from "../../config/appConfig";
-import { enqueueWebhook } from "../utils/slackQueue";
-import { sleep } from "../helpers/sleep";
+
 
 export async function alertOnStalePRs(
   stalePrs: PullRequestWithRepo[],
