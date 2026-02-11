@@ -8,7 +8,10 @@
     "dev": "concurrently \"npm run dev:api\" \"npm run dev:worker\"",
     "build": "tsc",
     "start": "tsx src/server.ts",
-    "start:worker": "tsx src/worker.ts"
+    "start:worker": "tsx src/worker.ts",
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "echo \"No tests yet.\""
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
