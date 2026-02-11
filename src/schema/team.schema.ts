@@ -36,7 +36,6 @@ export const onboardTeamSchema = z.object({
   provisionGithub: z.boolean().optional().default(true),
 });
 
-// No input needed; server generates secret
 export const provisionGithubWebhookSchema = z.object({});
 
 // Types are now exported from src/types/team.ts
