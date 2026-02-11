@@ -26,7 +26,7 @@ import { safeTeamResponse } from "../helpers/safeTeamResponse";
 import { NotFoundError } from "../errors";
 import { asyncHandler } from "../middlewares";
 
-import type { HttpContext } from "./team.types";
+import type { HttpContext } from "../types/common";
 import { getBaseUrl, getValidTeamId } from "../helpers/team.helper";
 import { success } from "zod";
 import { http } from "winston";

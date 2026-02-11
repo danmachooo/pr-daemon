@@ -4,7 +4,6 @@ import {
   markUnreviewedAlert,
   markStalledAlert,
 } from "./pullRequest.service";
-import { PullRequestWithRepo } from "./pullRequest.types";
 import {
   parseReviewers,
   formatReviewerNames,
@@ -15,6 +14,7 @@ import {
   sendQueued,
 } from "../helpers/alert.helper";
 import { appConfig } from "../../config/appConfig";
+import { PullRequestWithRepo } from "../types/pullRequest";
 
 
 export async function alertOnStalePRs(

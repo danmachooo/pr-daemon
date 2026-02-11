@@ -100,10 +100,10 @@ export const githubEventHeaderSchema = z.enum([
   "ping",
 ]);
 
-// Infer types from schemas
-export type PullRequestEvent = z.infer<typeof pullRequestEventSchema>;
-export type PullRequestReviewEvent = z.infer<
-  typeof pullRequestReviewEventSchema
->;
-export type GitHubEventType = z.infer<typeof githubEventHeaderSchema>;
-export type RequestedReviewer = z.infer<typeof requestedReviewerSchema>;
+// Types are now exported from src/types/webhook.ts
+export type {
+  PullRequestEvent,
+  PullRequestReviewEvent,
+  GitHubEventType,
+  RequestedReviewer,
+} from "../types/webhook";

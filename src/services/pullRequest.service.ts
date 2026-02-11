@@ -1,11 +1,8 @@
 import { prisma } from "../lib/prisma";
 import { PRStatus } from "../generated/prisma/enums";
-import {
-  PullRequestIdentifier,
-  ClosePullRequestInput,
-  UpsertPullRequest,
-} from "./pullRequest.types";
+
 import { RequestedReviewer } from "../schema/webhook.schema";
+import { PullRequestIdentifier, ClosePullRequestInput, UpsertPullRequest } from "../types/pullRequest";
 // --- Service Functions ---
 
 export async function prAlreadyExist(data: PullRequestIdentifier) {
@@ -65,22 +62,13 @@ export async function upsertPullRequest(data: UpsertPullRequest) {
     },
     update: {
       ...updateFields,
-      repository: {
-        connectOrCreate: {
-          where: { id: repoId },
-          create: {
-            id: repoId,
-            name: repoName,
-            fullName: repoFullName, // Add this
-            teamId: teamId, // Add this
-          },
-        },
-      },
+      status: updateFields.status as PRStatus,
     },
     create: {
       prNumber,
       openedAt: openedAt || new Date(),
       ...updateFields,
+      status: updateFields.status as PRStatus,
       repository: {
         connectOrCreate: {
           where: { id: repoId },

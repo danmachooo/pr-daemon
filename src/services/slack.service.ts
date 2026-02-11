@@ -1,18 +1,8 @@
 import axios, { AxiosError } from "axios";
 import Logger from "../utils/logger";
+import type { SlackAlertOptions, SlackAlertResult } from "../types/slack";
 
-interface SlackAlertOptions {
-  maxRetries?: number;
-  retryDelay?: number;
-  timeout?: number;
-  webhookUrl: string;
-}
-
-export interface SlackAlertResult {
-  success: boolean;
-  error?: string;
-  attempts: number;
-}
+export type { SlackAlertResult };
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
