@@ -1,4 +1,4 @@
-import type { TeamWithRelations, SafeTeamResponse } from "../types/team";
+import type { TeamWithRelations, SafeTeamResponse } from "../../types/team";
 
 /**
  * Converts a Team record (with relations) into a safe API response object.

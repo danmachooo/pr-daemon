@@ -1,7 +1,7 @@
 import cron from "node-cron";
 import Logger from "../utils/logger";
 import { decryptSecret } from "../services/secrets.service";
-import { aadFor } from "../helpers/aadFor";
+import { aadFor } from "../helpers/shared/aadFor.helper";
 import {
   bulkUpdateLastRuleRunAt,
   bulkUpdateLastRuleErrorAt,

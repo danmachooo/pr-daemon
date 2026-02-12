@@ -1,4 +1,4 @@
-export { errorHandler } from "./errorHandler";
-export { notFoundHandler } from "./notFoundHandler";
-export { asyncHandler } from "./asyncHandler";
-export { requireAuth } from "./requireAuth";
+export { errorHandler } from "./errorHandler.middleware";
+export { notFoundHandler } from "./notFoundHandler.middleware";
+export { asyncHandler } from "./asyncHandler.middleware";
+export { requireAuth } from "./requireAuth.middleware";

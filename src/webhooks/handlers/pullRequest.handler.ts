@@ -1,6 +1,6 @@
 // src/webhooks/handlers/pullRequest.handler.ts
 import { NotFoundError } from "../../errors";
-import { mapGitHubPayload } from "../../helpers/mapGithubPayload";
+import { mapGitHubPayload } from "../../helpers/github/mapGithubPayload.helper";
 import { PullRequestEvent, PullRequestReviewEvent } from "../../schema/github/webhook";
 import {
   upsertPullRequest,

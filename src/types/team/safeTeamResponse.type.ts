@@ -1,4 +1,4 @@
-import { Repository, TeamMember, User } from "../../generated/prisma/client";
+import type { Repository, TeamMember, User } from "../../generated/prisma/client";
 
 export type SafeTeamResponse = {
   id: number;

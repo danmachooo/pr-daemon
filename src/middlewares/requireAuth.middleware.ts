@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { auth } from "../lib/auth";
-import { toFetchHeaders } from "../helpers/toFetchHeaders";
+import { toFetchHeaders } from "../helpers/shared/toFetchHeaders.helper";
 
 /**
  * Authentication middleware that enforces a valid user session.

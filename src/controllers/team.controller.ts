@@ -1,16 +1,16 @@
 import { asyncHandler } from "../middlewares";
-import { HttpContext } from "../types/shared/httpContext.type";
+import type { HttpContext } from "../types/shared/httpContext.type";
 import { createTeamForOwner, getTeamByIdForOwner, getTeamByOwner, onboardTeamForOwner, provisionGithubWebhook, setSlackWebhook, updateTeamConfigs, updateTeamMeta } from "../services/team.service";
 import { NotFoundError } from "../errors";
-import { safeTeamResponse } from "../helpers/safeTeamResponse";
+import { safeTeamResponse } from "../helpers/team/safeTeamResponse.helper";
 import { createTeamSchema, updateConfigsSchema, updateSlackSchema, updateTeamSchema } from "../schema/team";
 import { findStalePullRequests } from "../rules/stalePr.rule";
 import { findStalledPrs } from "../rules/stalledPr.rule";
 import { findUnreviewedPullRequests } from "../rules/unreviewedPr.rule";
 import { onboardTeamSchema } from "../schema/team/onboardTeam.schema";
 import { getTeamIntegrationStatus, getDaemonStatus } from "../services/system.service";
-import { getBaseUrl, getValidTeamId } from "../helpers/team.helper";
-
+import { getValidTeamId } from "../helpers/team/getValidTeamId.helper";
+import { getBaseUrl } from "../helpers/shared/getBaseUrl.helper";
 /**
  * Get the authenticated user's team
  */

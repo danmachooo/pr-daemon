@@ -1,5 +1,7 @@
-import z from "zod";
+import { z } from "zod";
+import { ruleConfigSchema } from "./ruleConfig.schema";
+
 
 export const updateConfigsSchema = z.object({
-    configs: z.record(z.string(), z.unknown())
-})
+  configs: z.array(ruleConfigSchema).min(1),
+});

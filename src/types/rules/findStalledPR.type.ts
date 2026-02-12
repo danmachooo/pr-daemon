@@ -1,4 +1,4 @@
-import { SortOrder } from "../shared/sortOrder.type";
+import type { SortOrder } from "../shared/sortOrder.type";
 
 export interface FindUnreviewedPullRequestsOptions {
   sortOrder?: SortOrder;

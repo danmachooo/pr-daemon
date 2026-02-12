@@ -1,4 +1,4 @@
-import { Team, Repository, TeamMember, User } from "../../generated/prisma/client";
+import type { Team, Repository, TeamMember, User } from "../../generated/prisma/client";
 
 export type TeamWithRelations = Team & {
   repositories: Repository[];

@@ -2,7 +2,8 @@ import crypto from "crypto";
 import { prisma } from "../lib/prisma";
 import { TeamRole } from "../generated/prisma/enums";
 import { encryptSecret } from "./secrets.service";
-import { aadFor } from "../helpers/aadFor";
+import { aadFor } from "../helpers/shared/aadFor.helper";
+import { RuleConfig } from "../schema/team";
 
 export async function getTeamByOwner(ownerId: string) {
   return await prisma.team.findUnique({
@@ -92,22 +93,23 @@ export async function updateTeamMeta(
     });
 }
 
+
 export async function updateTeamConfigs(
   teamId: number,
   ownerId: string,
-  configs: Record<string, unknown>,
+  configs: RuleConfig[],
 ) {
-  // Ensure the team belongs to owner
-  const team = await prisma.team.findFirst({
-    where: { id: teamId, ownerId },
-    select: { id: true },
-  });
-  if (!team) return null;
+  
+  const result = await prisma.team.updateMany({
+    where: {
+      id: teamId, ownerId
+    },
+    data: {
+      configs
+    }
+  })
 
-  await prisma.team.update({
-    where: { id: teamId },
-    data: { configs: configs as any },
-  });
+  if(result.count === 0) return null
 
   return getTeamByIdForOwner(teamId, ownerId);
 }
@@ -176,7 +178,7 @@ export async function onboardTeamForOwner(input: {
   ownerId: string;
   name: string;
   slackWebhookUrl?: string;
-  configs: Record<string, unknown>;
+  configs: RuleConfig[];
   provisionGithub: boolean;
   baseUrl: string;
 }) {
@@ -188,7 +190,7 @@ export async function onboardTeamForOwner(input: {
     data: {
       name,
       ownerId,
-      configs: configs as any,
+      configs: configs,
       members: {
         create: { userId: ownerId, role: TeamRole.OWNER },
       },

@@ -10,7 +10,7 @@ import {
   getSystemStatus,
   getPRStatus,
 } from "../controllers/team.controller";
-import { requireAuth } from "../middlewares/requireAuth";
+import { requireAuth } from "../middlewares/requireAuth.middleware";
 
 const router = Router();
 

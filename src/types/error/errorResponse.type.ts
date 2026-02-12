@@ -1,14 +1,8 @@
-import { ZodIssue } from "zod/v3";
-
-export interface PrismaErrorDetail {
-  code: string;
-  target?: string[];
-  meta?: Record<string, unknown>;
-}
+import type { ErrorDetails } from "./errorDetails.type";
 
 export interface ErrorResponse {
   success: false;
   message: string;
-  errors?: any;
+  errors?: ErrorDetails;
   stack?: string;
 }
