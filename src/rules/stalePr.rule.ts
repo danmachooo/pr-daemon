@@ -1,7 +1,8 @@
-import { prisma } from "../lib/prisma";
-import { PRStatus } from "../generated/prisma/enums";
-import { appConfig } from "../../config/appConfig";
-import { FindStalePullRequestsOptions } from "../types/rules/findUnreviewedPR.type";
+import { appConfig } from "@/config/appConfig";
+import { prisma } from "@/lib/prisma";
+import { FindStalePullRequestsOptions } from "@/types/rules";
+import { PRStatus } from "@prisma/client";
+
 
 export async function findStalePullRequests(
   teamId: number,

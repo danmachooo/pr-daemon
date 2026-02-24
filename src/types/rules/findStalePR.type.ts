@@ -1,4 +1,4 @@
-import type { SortOrder } from "../shared/sortOrder.type";
+import { SortOrder } from "../shared";
 
 export interface FindStalledPrsOptions {
   sortOrder?: SortOrder;

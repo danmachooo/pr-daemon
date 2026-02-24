@@ -1,10 +1,9 @@
-import { prisma } from "../lib/prisma";
-import { PRStatus } from "../generated/prisma/enums";
-import { PullRequestIdentifier, ClosePullRequest, UpsertPullRequest, ReviewData } from "../types/github/prs";
-import { CompletedReviewRecord } from "../schema/github/webhook";
+import { prisma } from "@/lib/prisma";
+import { CompletedReviewRecord } from "@/schema/github/webhook";
+import { completedReviewRecordSchema } from "@/schema/github/webhook/completeReviewRecord.schema";
+import { PullRequestIdentifier, ClosePullRequest, UpsertPullRequest, ReviewData } from "@/types/github/prs";
+import { PRStatus } from "@prisma/client";
 import z from "zod";
-import { completedReviewRecordSchema } from "../schema/github/webhook/completeReviewRecord.schema";
-
 
 export async function prAlreadyExist(data: PullRequestIdentifier) {
   return await prisma.pullRequest.findUnique({

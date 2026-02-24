@@ -1,4 +1,4 @@
-import Logger from "../../utils/logger";
+import Logger from "@/utils/logger";
 
 /**
  * Calculates the time difference between the current moment

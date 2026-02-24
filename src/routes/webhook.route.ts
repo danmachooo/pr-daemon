@@ -1,7 +1,7 @@
 // src/routes.ts
+import { githubWebhookHandler } from "@/webhooks/github";
 import { Router } from "express";
 import express from "express";
-import { githubWebhookHandler } from "../webhooks/github";
 
 const router = Router();
 

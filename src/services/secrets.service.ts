@@ -1,4 +1,4 @@
-import { appConfig } from "../../config/appConfig";
+import { appConfig } from "../config/appConfig";
 import { decryptAesGcm, encryptAesGcm } from "../utils/crypto";
 
 let cachedKeys: Buffer[] | null = null;

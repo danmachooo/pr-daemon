@@ -1,15 +1,9 @@
-// src/webhooks/handlers/pullRequest.handler.ts
-import { NotFoundError } from "../../errors";
-import { mapGitHubPayload } from "../../helpers/github/mapGithubPayload.helper";
-import { PullRequestEvent, PullRequestReviewEvent } from "../../schema/github/webhook";
-import {
-  upsertPullRequest,
-  resetPullRequestAlerts,
-  closePullRequest,
-  recordReviewSubmission,
-} from "../../services/pullRequest.service";
-import { getTeamIdByRepo } from "../../services/team.service";
-import Logger from "../../utils/logger";
+import { NotFoundError } from "@/errors";
+import { mapGitHubPayload } from "@/helpers/github/mapGithubPayload.helper";
+import { PullRequestEvent, PullRequestReviewEvent } from "@/schema/github/webhook";
+import { upsertPullRequest, resetPullRequestAlerts, closePullRequest, recordReviewSubmission } from "@/services/pullRequest.service";
+import { getTeamIdByRepo } from "@/services/team.service";
+import Logger from "@/utils/logger";
 
 export async function handlePullRequestEvent(payload: PullRequestEvent) {
   const { action, pull_request, repository } = payload;

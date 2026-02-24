@@ -1,16 +1,17 @@
-import { asyncHandler } from "../middlewares";
-import type { HttpContext } from "../types/shared/httpContext.type";
-import { createTeamForOwner, getTeamByIdForOwner, getTeamByOwner, onboardTeamForOwner, provisionGithubWebhook, setSlackWebhook, updateTeamConfigs, updateTeamMeta } from "../services/team.service";
-import { NotFoundError } from "../errors";
-import { safeTeamResponse } from "../helpers/team/safeTeamResponse.helper";
-import { createTeamSchema, updateConfigsSchema, updateSlackSchema, updateTeamSchema } from "../schema/team";
-import { findStalePullRequests } from "../rules/stalePr.rule";
-import { findStalledPrs } from "../rules/stalledPr.rule";
-import { findUnreviewedPullRequests } from "../rules/unreviewedPr.rule";
-import { onboardTeamSchema } from "../schema/team/onboardTeam.schema";
-import { getTeamIntegrationStatus, getDaemonStatus } from "../services/system.service";
-import { getValidTeamId } from "../helpers/team/getValidTeamId.helper";
-import { getBaseUrl } from "../helpers/shared/getBaseUrl.helper";
+import { NotFoundError } from "@/errors";
+import { getBaseUrl } from "@/helpers/shared/getBaseUrl.helper";
+import { getValidTeamId } from "@/helpers/team/getValidTeamId.helper";
+import { safeTeamResponse } from "@/helpers/team/safeTeamResponse.helper";
+import { asyncHandler } from "@/middlewares";
+import { findStalePullRequests } from "@/rules/stalePr.rule";
+import { findStalledPrs } from "@/rules/stalledPr.rule";
+import { findUnreviewedPullRequests } from "@/rules/unreviewedPr.rule";
+import { createTeamSchema, updateTeamSchema, updateConfigsSchema, updateSlackSchema } from "@/schema/team";
+import { onboardTeamSchema } from "@/schema/team/onboardTeam.schema";
+import { getTeamIntegrationStatus, getDaemonStatus } from "@/services/system.service";
+import { getTeamByOwner, createTeamForOwner, getTeamByIdForOwner, updateTeamMeta, updateTeamConfigs, setSlackWebhook, provisionGithubWebhook, onboardTeamForOwner } from "@/services/team.service";
+import { HttpContext } from "@/types/shared";
+
 /**
  * Get the authenticated user's team
  */

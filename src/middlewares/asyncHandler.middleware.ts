@@ -1,5 +1,6 @@
-import { Request, Response, NextFunction } from "express";
-import { HttpContext } from "../types/shared";
+import { HttpContext } from "@/types/shared";
+import { Request, Response,NextFunction } from "express";
+
 /**
  * Wraps an asynchronous route handler to automatically
  * forward rejected promises and thrown errors to Express'

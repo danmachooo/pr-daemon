@@ -1,6 +1,7 @@
-import { PRStatus } from "../../generated/prisma/enums";
-import { PullRequestEvent } from "../../schema/github/webhook";
-import type { UpsertPullRequest } from "../../types/github/prs";
+import { PullRequestEvent } from "@/schema/github/webhook";
+import { UpsertPullRequest } from "@/types/github/prs";
+import { PRStatus } from "@prisma/client";
+
 
 export function mapGitHubPayload(
   payload: PullRequestEvent,

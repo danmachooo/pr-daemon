@@ -1,6 +1,7 @@
-import { appConfig } from "../../config/appConfig";
-import { PRStatus } from "../generated/prisma/enums";
-import { prisma } from "../lib/prisma";
+import { appConfig } from "@/config/appConfig";
+import { prisma } from "@/lib/prisma";
+import { PRStatus } from "@prisma/client";
+
 
 type SortOrder = "latest" | "oldest" | "all";
 

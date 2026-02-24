@@ -1,5 +1,6 @@
-import { HttpContext } from "../../types/shared";
-import { ValidationError } from "../../errors";
+import { ValidationError } from "@/errors";
+import { HttpContext } from "@/types/shared";
+
 /**
  * Extracts and validates the `teamId` route parameter
  * from the HTTP request context.

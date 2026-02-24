@@ -1,20 +1,8 @@
-import Logger from "../utils/logger";
-import {
-  markStaleAlert,
-  markUnreviewedAlert,
-  markStalledAlert,
-} from "./pullRequest.service";
-import {
-  parseReviewers,
-  formatReviewerNames,
-  getLastReviewer,
-  formatLastActivity,
-  formatPRLink,
-  formatOpenedDate,
-  sendQueued,
-} from "../helpers/alert/alert.helper";
-import { appConfig } from "../../config/appConfig";
-import { PullRequestWithRepo } from "../types/github/prs";
+import { appConfig } from "@/config/appConfig";
+import { formatPRLink, formatOpenedDate, sendQueued, parseReviewers, formatReviewerNames, getLastReviewer, formatLastActivity } from "@/helpers/alert/alert.helper";
+import { PullRequestWithRepo } from "@/types/github/prs";
+import { markStaleAlert, markUnreviewedAlert, markStalledAlert } from "./pullRequest.service";
+import Logger from "@/utils/logger";
 
 export async function alertOnStalePRs(
   stalePrs: PullRequestWithRepo[],

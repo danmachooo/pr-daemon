@@ -1,5 +1,4 @@
 import { AppError } from "./AppError";
-
 /**
  * Error representing a resource conflict.
  *

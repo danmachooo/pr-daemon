@@ -1,23 +1,13 @@
-import cron from "node-cron";
-import Logger from "../utils/logger";
-import { decryptSecret } from "../services/secrets.service";
-import { aadFor } from "../helpers/shared/aadFor.helper";
-import {
-  bulkUpdateLastRuleRunAt,
-  bulkUpdateLastRuleErrorAt,
-} from "../services/system.service";
-import { findStalePullRequests } from "../rules/stalePr.rule";
-import { findUnreviewedPullRequests } from "../rules/unreviewedPr.rule";
-import { findStalledPrs } from "../rules/stalledPr.rule";
-import {
-  alertOnStalePRs,
-  alertOnStalledPRs,
-  alertOnUnreviewedPRs,
-} from "../services/alert.service";
-import {
-  getTeamsWithWebhook,
-  updateLastSlackSent,
-} from "../services/team.service";
+import { aadFor } from "@/helpers/shared/aadFor.helper";
+import { findStalePullRequests } from "@/rules/stalePr.rule";
+import { findStalledPrs } from "@/rules/stalledPr.rule";
+import { findUnreviewedPullRequests } from "@/rules/unreviewedPr.rule";
+import { alertOnStalePRs, alertOnUnreviewedPRs, alertOnStalledPRs } from "@/services/alert.service";
+import { decryptSecret } from "@/services/secrets.service";
+import { bulkUpdateLastRuleRunAt, bulkUpdateLastRuleErrorAt } from "@/services/system.service";
+import { getTeamsWithWebhook, updateLastSlackSent } from "@/services/team.service";
+import Logger from "@/utils/logger";
+import cron from "node-cron"
 
 let isRunning = false;
 

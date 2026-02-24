@@ -1,5 +1,5 @@
+import { NotFoundError } from "@/errors";
 import { Request, Response, NextFunction } from "express";
-import { NotFoundError } from "../errors";
 
 /**
  * Catch-all middleware for handling unknown routes (404).

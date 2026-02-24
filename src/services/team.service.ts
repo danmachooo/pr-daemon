@@ -1,9 +1,10 @@
-import crypto from "crypto";
-import { prisma } from "../lib/prisma";
-import { TeamRole } from "../generated/prisma/enums";
+import { aadFor } from "@/helpers/shared/aadFor.helper";
+import { prisma } from "@/lib/prisma";
+import { RuleConfig } from "@/schema/team";
+import { TeamRole } from "@prisma/client";
 import { encryptSecret } from "./secrets.service";
-import { aadFor } from "../helpers/shared/aadFor.helper";
-import { RuleConfig } from "../schema/team";
+import crypto from 'crypto';
+
 
 export async function getTeamByOwner(ownerId: string) {
   return await prisma.team.findUnique({

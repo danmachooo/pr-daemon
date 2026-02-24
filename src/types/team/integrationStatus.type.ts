@@ -1,4 +1,4 @@
-import type { Team } from "../../generated/prisma/client";
+import { Team } from "@prisma/client";
 
 export type TeamIntegrationStatus = Pick<
   Team,

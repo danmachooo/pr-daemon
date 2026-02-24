@@ -1,5 +1,5 @@
+import { decryptSecret } from "@/services/secrets.service";
 import crypto from "crypto";
-import { decryptSecret } from "../services/secrets.service";
 
 export async function verifyGithubWebhookSignature(opts: {
   githubWebhookSecretEnc: string | null;

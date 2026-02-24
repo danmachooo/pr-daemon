@@ -1,7 +1,6 @@
+import { SlackAlertOptions, SlackAlertResult } from "@/types/slack";
 import axios, { AxiosError } from "axios";
-import Logger from "../utils/logger";
-import { SlackAlertOptions, SlackAlertResult } from "../types/slack";
-
+import Logger from "@/utils/logger";
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export async function sendSlackAlert(

@@ -1,4 +1,4 @@
-import type { ReviewState } from "../../../schema/github/webhook"
+import { ReviewState } from "@/schema/github/webhook"
 
 export type ReviewData = {
   reviewId: number

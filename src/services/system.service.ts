@@ -1,5 +1,5 @@
-import { prisma } from "../lib/prisma";
-import type { Team } from "../generated/prisma/client";
+import { prisma } from "@/lib/prisma";
+import { Team } from "@prisma/client";
 
 export type TeamIntegrationStatus = Pick<
   Team,

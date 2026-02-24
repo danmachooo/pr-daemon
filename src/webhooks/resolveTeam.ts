@@ -1,6 +1,7 @@
 // src/webhooks/resolveTeam.ts
 
-import { prisma } from "../lib/prisma";
+import { prisma } from "@/lib/prisma";
+
 
 export async function resolveTeamFromRepoId(repoId: number) {
   const repo = await prisma.repository.findUnique({

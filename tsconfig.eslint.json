@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "src",
+    "prisma.config.ts",
+    "**/*.test.ts",
+    "vitest.config.ts",
+    "eslint.config.js"
+  ]
+}

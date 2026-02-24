@@ -1,4 +1,5 @@
-import type { Repository, TeamMember, User } from "../../generated/prisma/client";
+import { Repository, TeamMember } from "@prisma/client";
+import { User } from "better-auth/types";
 
 export type SafeTeamResponse = {
   id: number;

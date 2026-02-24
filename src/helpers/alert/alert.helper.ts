@@ -1,10 +1,10 @@
+import { RequestedReviewer } from "@/schema/github/webhook";
+import { sendSlackAlert } from "@/services/slack.service";
+import { SlackAlertResult } from "@/types/slack";
+import { enqueueWebhook } from "@/utils/slackQueue";
 import { getHoursAgo } from "../shared/hoursAgo.helper";
-
-import { sendSlackAlert } from "../../services/slack.service";
-import { enqueueWebhook } from "../../utils/slackQueue";
 import { sleep } from "../shared/sleep";
-import { RequestedReviewer } from "../../schema/github/webhook";
-import { SlackAlertResult } from "../../types/slack";
+
 
 /**
  * Safely parses a "reviewers" JSON field into a list of reviewers.

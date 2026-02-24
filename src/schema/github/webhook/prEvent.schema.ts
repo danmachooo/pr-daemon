@@ -1,7 +1,7 @@
+import { userSchema } from "better-auth/db";
 import z from "zod";
-import { pullRequestSchema } from './pr.schema';
+import { pullRequestSchema } from "./pr.schema";
 import { repositorySchema } from "./repository.schema";
-import { userSchema } from "./user.schema";
 import { teamSchema } from "./team.schema";
 
 

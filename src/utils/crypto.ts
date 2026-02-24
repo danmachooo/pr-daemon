@@ -1,5 +1,5 @@
+import { appConfig } from "@/config/appConfig";
 import crypto from "crypto";
-import { appConfig } from "../../config/appConfig";
 
 /**
  * Encrypts a UTF-8 string using AES-256-GCM.

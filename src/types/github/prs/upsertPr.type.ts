@@ -1,5 +1,5 @@
-import type { PRStatus } from "../../../generated/prisma/enums";
-import type { PullRequestIdentifier } from "./prIdentifier.type";
+import { PRStatus } from "@prisma/client";
+import { PullRequestIdentifier } from "./prIdentifier.type";
 
 export type Reviewer = {
   id: number;

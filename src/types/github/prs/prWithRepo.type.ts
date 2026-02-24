@@ -1,4 +1,4 @@
-import type { PullRequest, Repository } from "../../../generated/prisma/client";
+import { PullRequest, Repository } from "@prisma/client";
 
 export type PullRequestWithRepo = PullRequest & {
   repository: Repository;

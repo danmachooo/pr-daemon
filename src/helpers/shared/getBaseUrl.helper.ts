@@ -1,5 +1,5 @@
-import { appConfig } from "../../../config/appConfig";
-import { AppError } from "../../errors";
+import { AppError } from "@/errors";
+import { appConfig } from "@/config/appConfig";
 
 /**
  * Returns the public base URL of the application.

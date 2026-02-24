@@ -1,12 +1,10 @@
 // src/webhooks/github.ts
+import { updateLastGithubEvent } from "@/services/team.service";
 import { Request, Response } from "express";
-import {
-  handlePullRequestEvent,
-  handlePullRequestReviewEvent,
-} from "./handlers/pullRequest.handler";
+import { handlePullRequestEvent, handlePullRequestReviewEvent } from "./handlers/pullRequest.handler";
 import { resolveTeamFromRepoId } from "./resolveTeam";
 import { verifyGithubWebhookSignature } from "./verifyGithub";
-import { updateLastGithubEvent } from "../services/team.service";
+
 
 export const githubWebhookHandler = async (req: Request, res: Response) => {
   try {

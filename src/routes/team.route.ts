@@ -1,16 +1,6 @@
+import { onboardTeam, getMyTeam, getSystemStatus, getPRStatus, createTeam, updateTeam, updateConfigs, updateTeamSlackWebhook, createTeamGithubWebhook } from "@/controllers/team.controller";
+import { requireAuth } from "@/middlewares";
 import { Router } from "express";
-import {
-  createTeam,
-  getMyTeam,
-  onboardTeam,
-  createTeamGithubWebhook,
-  updateConfigs,
-  updateTeamSlackWebhook,
-  updateTeam,
-  getSystemStatus,
-  getPRStatus,
-} from "../controllers/team.controller";
-import { requireAuth } from "../middlewares/requireAuth.middleware";
 
 const router = Router();
 

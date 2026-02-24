@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "TeamMember" ALTER COLUMN "role" SET DEFAULT 'MEMBER';
